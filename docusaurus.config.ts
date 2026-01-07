@@ -14,7 +14,7 @@ const config: Config = {
   url: 'https://docs.vbrowser.io',
   baseUrl: '/',
 
-  organizationName: 'fishnotphish', 
+  organizationName: 'fish-not-phish', 
   projectName: 'vbrowser-docs',
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
