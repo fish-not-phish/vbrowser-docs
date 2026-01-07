@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-getting-started/architecture" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Architecture | vBrowser</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" property="og:url" content="https://docs.vbrowser.io/docs/getting-started/architecture"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="keywords" content="virtual browser, isolated browser, disposable browser, sandbox browser, secure browsing, malware analysis, phishing analysis, OSINT, cybersecurity tools"><meta data-rh="true" name="robots" content="index, follow"><meta data-rh="true" property="og:type" content="website"><meta data-rh="true" property="og:site_name" content="vBrowser"><meta data-rh="true" property="og:image" content="https://docs.vbrowser.io/img/social-card.png"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" name="twitter:site" content="@vbrowser_io"><meta data-rh="true" name="twitter:title" content="vBrowser – Secure &amp; Isolated Virtual Browser"><meta data-rh="true" name="twitter:description" content="Disposable browser environments built for cybersecurity professionals."><meta data-rh="true" name="twitter:image" content="https://docs.vbrowser.io/img/social-card.png"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Architecture | vBrowser"><meta data-rh="true" name="description" content="Open vBrowser (OvB) is built as a cloud-native, container-first platform that combines local orchestration, automated infrastructure provisioning, and ephemeral browser workloads. Its architecture is designed to maximize isolation, repeatability, and operator control while minimizing long-lived state."><meta data-rh="true" property="og:description" content="Open vBrowser (OvB) is built as a cloud-native, container-first platform that combines local orchestration, automated infrastructure provisioning, and ephemeral browser workloads. Its architecture is designed to maximize isolation, repeatability, and operator control while minimizing long-lived state."><link data-rh="true" rel="icon" href="/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://docs.vbrowser.io/docs/getting-started/architecture"><link data-rh="true" rel="alternate" href="https://docs.vbrowser.io/docs/getting-started/architecture" hreflang="en"><link data-rh="true" rel="alternate" href="https://docs.vbrowser.io/docs/getting-started/architecture" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Getting Started","item":"https://docs.vbrowser.io/docs/category/getting-started"},{"@type":"ListItem","position":2,"name":"Architecture","item":"https://docs.vbrowser.io/docs/getting-started/architecture"}]}</script><link rel="stylesheet" href="/assets/css/styles.da8c1d92.css">
+<script src="/assets/js/runtime~main.ccb22a26.js" defer="defer"></script>
+<script src="/assets/js/main.774e5e58.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/img/vbrowser-logo.png"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/"><div class="navbar__logo"><img src="/img/vbrowser-logo.png" alt="vBrowser Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/img/vbrowser-logo.png" alt="vBrowser Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">vBrowser</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/docs/category/getting-started">Docs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/docs/category/getting-started"><span title="Getting Started" class="categoryLinkLabel_W154">Getting Started</span></a><button aria-label="Collapse sidebar category &#x27;Getting Started&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/getting-started/overview"><span title="Overview" class="linkLabel_WmDU">Overview</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/getting-started/prerequisites"><span title="Prerequisites" class="linkLabel_WmDU">Prerequisites</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/docs/getting-started/architecture"><span title="Architecture" class="linkLabel_WmDU">Architecture</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/getting-started/security-model"><span title="Security Model" class="linkLabel_WmDU">Security Model</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/docs/category/installation"><span title="Installation" class="categoryLinkLabel_W154">Installation</span></a><button aria-label="Expand sidebar category &#x27;Installation&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/docs/category/browsers"><span title="Browsers" class="categoryLinkLabel_W154">Browsers</span></a><button aria-label="Expand sidebar category &#x27;Browsers&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/docs/category/usage"><span title="Usage" class="categoryLinkLabel_W154">Usage</span></a><button aria-label="Expand sidebar category &#x27;Usage&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/docs/category/security"><span title="Security" class="categoryLinkLabel_W154">Security</span></a><button aria-label="Expand sidebar category &#x27;Security&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/docs/category/legal"><span title="Legal" class="categoryLinkLabel_W154">Legal</span></a><button aria-label="Expand sidebar category &#x27;Legal&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/docs/category/getting-started"><span>Getting Started</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Architecture</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Architecture</h1></header>
+<p>Open vBrowser (OvB) is built as a <strong>cloud-native, container-first platform</strong> that combines local orchestration, automated infrastructure provisioning, and ephemeral browser workloads. Its architecture is designed to maximize isolation, repeatability, and operator control while minimizing long-lived state.</p>
+<p>This document explains how OvB works <strong>end-to-end</strong>, from setup to runtime.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="high-level-architecture-diagram">High-Level Architecture Diagram<a href="#high-level-architecture-diagram" class="hash-link" aria-label="Direct link to High-Level Architecture Diagram" title="Direct link to High-Level Architecture Diagram" translate="no">​</a></h2>
+<p><img decoding="async" loading="lazy" alt="OvB Architecture Diagram" src="/assets/images/diagram-transparent-dark-9e091c7e94e78e3595f9fb07f9ae0388.png" width="1500" height="700" class="img_ev3q"></p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="high-level-components">High-Level Components<a href="#high-level-components" class="hash-link" aria-label="Direct link to High-Level Components" title="Direct link to High-Level Components" translate="no">​</a></h2>
+<p>OvB consists of five primary architectural layers:</p>
+<ol>
+<li class=""><strong>Local Orchestration Layer</strong></li>
+<li class=""><strong>Infrastructure Provisioning Layer</strong></li>
+<li class=""><strong>Image Management Layer</strong></li>
+<li class=""><strong>Application Runtime Layer</strong></li>
+<li class=""><strong>Browser Execution Layer</strong></li>
+</ol>
+<p>Each layer has a single responsibility and minimal trust in the others.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="local-orchestration-layer">Local Orchestration Layer<a href="#local-orchestration-layer" class="hash-link" aria-label="Direct link to Local Orchestration Layer" title="Direct link to Local Orchestration Layer" translate="no">​</a></h2>
+<p>The entry point for OvB is the <code>setup.sh</code> script, executed from the <code>terraform/</code> directory.</p>
+<p>Responsibilities:</p>
+<ul>
+<li class="">Browser image selection</li>
+<li class="">Environment variable collection</li>
+<li class="">Secure secret generation</li>
+<li class="">Terraform configuration patching</li>
+<li class="">Docker image builds</li>
+<li class="">Service startup</li>
+</ul>
+<p>The setup script is <strong>idempotent by design</strong> and may be safely re-run after teardown.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="browser-image-selection-flow">Browser Image Selection Flow<a href="#browser-image-selection-flow" class="hash-link" aria-label="Direct link to Browser Image Selection Flow" title="Direct link to Browser Image Selection Flow" translate="no">​</a></h2>
+<p>OvB treats browsers as <strong>pluggable execution units</strong>.</p>
+<p>During setup:</p>
+<ul>
+<li class="">A default browser set is offered (<code>chrome</code>, <code>mullvad</code>, <code>tor</code>)</li>
+<li class="">Operators may select a custom subset</li>
+<li class="">Unused browser directories are moved to <code>unused/</code></li>
+<li class="">Selected browser directories remain in <code>vbrowsers/</code></li>
+</ul>
+<p>This mechanism ensures:</p>
+<ul>
+<li class="">Only explicitly approved browsers are built</li>
+<li class="">Reduced image build time</li>
+<li class="">Smaller ECR footprint</li>
+</ul>
+<p>The selected browser list is written into <code>terraform.tfvars</code> as <code>docker_images</code>.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="infrastructure-provisioning-layer">Infrastructure Provisioning Layer<a href="#infrastructure-provisioning-layer" class="hash-link" aria-label="Direct link to Infrastructure Provisioning Layer" title="Direct link to Infrastructure Provisioning Layer" translate="no">​</a></h2>
+<p>Terraform is used to provision <strong>all cloud infrastructure</strong>.</p>
+<p>Provisioned resources include:</p>
+<ul>
+<li class="">ECS cluster</li>
+<li class="">ECS task definitions</li>
+<li class="">ECS services</li>
+<li class="">ECR repositories</li>
+<li class="">IAM roles and policies</li>
+<li class="">Networking primitives</li>
+<li class="">CloudWatch log groups</li>
+</ul>
+<p>Terraform is executed automatically:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">terraform init</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">terraform apply -auto-approve</span><br></span></code></pre></div></div>
+<p>Region selection is derived from <code>AWS_DEFAULT_REGION</code> and propagated consistently across all Terraform modules.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="environment-propagation-model">Environment Propagation Model<a href="#environment-propagation-model" class="hash-link" aria-label="Direct link to Environment Propagation Model" title="Direct link to Environment Propagation Model" translate="no">​</a></h2>
+<p>All configuration is consolidated into a single <code>.env</code> file generated during setup.</p>
+<p>The <code>.env</code> file is copied into:</p>
+<ul>
+<li class=""><code>django/</code></li>
+<li class=""><code>docker/containers-update/</code></li>
+<li class=""><code>docker/vbrowser-stack/</code></li>
+</ul>
+<p>This ensures:</p>
+<ul>
+<li class="">Configuration consistency</li>
+<li class="">Single source of truth</li>
+<li class="">Predictable runtime behavior</li>
+</ul>
+<p>No service maintains its own independent configuration store.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="image-management-layer-containers-updater">Image Management Layer (containers-updater)<a href="#image-management-layer-containers-updater" class="hash-link" aria-label="Direct link to Image Management Layer (containers-updater)" title="Direct link to Image Management Layer (containers-updater)" translate="no">​</a></h2>
+<p>The <code>containers-updater</code> service is responsible for:</p>
+<ul>
+<li class="">Building browser Docker images</li>
+<li class="">Tagging images deterministically</li>
+<li class="">Pushing images to AWS ECR</li>
+<li class="">Preparing images for ECS consumption</li>
+</ul>
+<p>This process runs <strong>once per deployment</strong>.</p>
+<p>Operators must wait for the updater to complete before starting browser sessions.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="application-runtime-layer-vbrowser-backend">Application Runtime Layer (vBrowser Backend)<a href="#application-runtime-layer-vbrowser-backend" class="hash-link" aria-label="Direct link to Application Runtime Layer (vBrowser Backend)" title="Direct link to Application Runtime Layer (vBrowser Backend)" translate="no">​</a></h2>
+<p>The <code>vbrowser</code> service is a Django-based backend that provides:</p>
+<ul>
+<li class="">API endpoints</li>
+<li class="">Session lifecycle management</li>
+<li class="">Authentication and authorization</li>
+<li class="">Idle timeout enforcement</li>
+<li class="">ECS task orchestration</li>
+</ul>
+<p>It depends on:</p>
+<ul>
+<li class="">PostgreSQL (persistent state)</li>
+<li class="">Redis (ephemeral coordination)</li>
+</ul>
+<p>The backend does <strong>not</strong> execute browsers directly.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="browser-execution-layer">Browser Execution Layer<a href="#browser-execution-layer" class="hash-link" aria-label="Direct link to Browser Execution Layer" title="Direct link to Browser Execution Layer" translate="no">​</a></h2>
+<p>Each browser session is executed as:</p>
+<ul>
+<li class="">A dedicated ECS task</li>
+<li class="">A single browser per container</li>
+<li class="">An isolated filesystem</li>
+<li class="">No shared state between sessions</li>
+</ul>
+<p>Characteristics:</p>
+<ul>
+<li class="">Fully ephemeral</li>
+<li class="">Destroyed on termination or idle timeout</li>
+<li class="">No persistence of cookies, cache, or files</li>
+</ul>
+<p>Browser containers are read-only consumers of browser images.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="data-flow-summary">Data Flow Summary<a href="#data-flow-summary" class="hash-link" aria-label="Direct link to Data Flow Summary" title="Direct link to Data Flow Summary" translate="no">​</a></h2>
+<ol>
+<li class="">Operator runs <code>setup.sh</code></li>
+<li class="">Infrastructure is provisioned via Terraform</li>
+<li class="">Browser images are built and pushed</li>
+<li class="">Backend services are started via Docker Compose</li>
+<li class="">Browser sessions are launched on-demand in ECS</li>
+<li class="">Sessions terminate and are destroyed automatically</li>
+</ol>
+<p>At no point does untrusted content reach the operator’s local system.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="trust--isolation-boundaries">Trust &amp; Isolation Boundaries<a href="#trust--isolation-boundaries" class="hash-link" aria-label="Direct link to Trust &amp; Isolation Boundaries" title="Direct link to Trust &amp; Isolation Boundaries" translate="no">​</a></h2>
+<p>OvB enforces strict boundaries:</p>
+<ul>
+<li class="">Local host never executes browser code</li>
+<li class="">Backend does not share browser state</li>
+<li class="">Browsers do not share storage</li>
+<li class="">Infrastructure access is IAM-scoped</li>
+</ul>
+<p>Each layer assumes the others may fail and limits blast radius accordingly.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="design-principles">Design Principles<a href="#design-principles" class="hash-link" aria-label="Direct link to Design Principles" title="Direct link to Design Principles" translate="no">​</a></h2>
+<p>OvB is built around the following principles:</p>
+<ul>
+<li class=""><strong>Ephemeral by default</strong></li>
+<li class=""><strong>Explicit operator control</strong></li>
+<li class=""><strong>Minimal long-lived state</strong></li>
+<li class=""><strong>Infrastructure as code</strong></li>
+<li class=""><strong>Fail-safe teardown</strong></li>
+</ul>
+<p>These principles guide all architectural decisions.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="next-steps">Next Steps<a href="#next-steps" class="hash-link" aria-label="Direct link to Next Steps" title="Direct link to Next Steps" translate="no">​</a></h2>
+<p>To understand OvB’s security guarantees in depth:</p>
+<p>Continue to <strong>Security Model</strong></p></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/docs/getting-started/prerequisites"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Prerequisites</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/docs/getting-started/security-model"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Security Model</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#high-level-architecture-diagram" class="table-of-contents__link toc-highlight">High-Level Architecture Diagram</a></li><li><a href="#high-level-components" class="table-of-contents__link toc-highlight">High-Level Components</a></li><li><a href="#local-orchestration-layer" class="table-of-contents__link toc-highlight">Local Orchestration Layer</a></li><li><a href="#browser-image-selection-flow" class="table-of-contents__link toc-highlight">Browser Image Selection Flow</a></li><li><a href="#infrastructure-provisioning-layer" class="table-of-contents__link toc-highlight">Infrastructure Provisioning Layer</a></li><li><a href="#environment-propagation-model" class="table-of-contents__link toc-highlight">Environment Propagation Model</a></li><li><a href="#image-management-layer-containers-updater" class="table-of-contents__link toc-highlight">Image Management Layer (containers-updater)</a></li><li><a href="#application-runtime-layer-vbrowser-backend" class="table-of-contents__link toc-highlight">Application Runtime Layer (vBrowser Backend)</a></li><li><a href="#browser-execution-layer" class="table-of-contents__link toc-highlight">Browser Execution Layer</a></li><li><a href="#data-flow-summary" class="table-of-contents__link toc-highlight">Data Flow Summary</a></li><li><a href="#trust--isolation-boundaries" class="table-of-contents__link toc-highlight">Trust &amp; Isolation Boundaries</a></li><li><a href="#design-principles" class="table-of-contents__link toc-highlight">Design Principles</a></li><li><a href="#next-steps" class="table-of-contents__link toc-highlight">Next Steps</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/overview">Docs</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://x.com/vbrowser_io" target="_blank" rel="noopener noreferrer" class="footer__link-item">X<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/fish-not-phish/open-vbrowser" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 vBrowser. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
