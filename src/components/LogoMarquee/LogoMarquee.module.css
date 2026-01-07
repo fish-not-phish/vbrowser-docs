@@ -1,0 +1,50 @@
+.wrapper {
+  background-color: #121721;
+  padding: 3rem 0;
+  overflow: hidden;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+}
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: scroll 35s linear infinite;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3rem;
+  opacity: 0.85;
+}
+
+.logo img {
+  height: 36px;
+  width: auto;
+  filter: grayscale(100%);
+}
+
+.logo img:hover {
+  filter: none;
+  opacity: 1;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee:hover .track {
+  animation-play-state: paused;
+}

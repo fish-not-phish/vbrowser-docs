@@ -1,0 +1,8 @@
+{
+  "label": "Usage",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Learn how to use Open vBrowser effectively, including session management, configuration options, and common workflows."
+  }
+}
