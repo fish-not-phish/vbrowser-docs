@@ -351,7 +351,9 @@ export default function LandingPage() {
                 <ArrowRightIcon className='size-4' />
               </Link>
               <Link
-                href='/usage/launching-a-session'
+                href='https://youtu.be/Dh_dyxh2Eo8'
+                target='_blank'
+                rel='noopener noreferrer'
                 className='inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/8 px-6 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/12'
               >
                 <PlayCircleIcon className='size-4' />
