@@ -1,0 +1,63 @@
+# Quickstart
+
+This guide walks through a first-time deployment from clone to a running OvB instance.
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/fish-not-phish/open-vbrowser.git
+cd open-vbrowser
+```
+
+## 2. Export AWS Credentials
+
+```bash
+export AWS_ACCESS_KEY_ID="your-access-key-id"
+export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
+```
+
+These are used by Terraform to provision AWS infrastructure. See [AWS Credentials](/getting-started/prerequisites#aws-credentials) if you haven't created them yet.
+
+## 3. Run the Setup Script
+
+```bash
+cd terraform
+./setup.sh
+```
+
+`setup.sh` is fully interactive — it will prompt you for everything else. Have the following ready:
+
+| Prompt | Description |
+|---|---|
+| Browser/OS images | Which images to install (or select all) |
+| Domain | Your Cloudflare-managed domain (e.g. `example.com`) |
+| AWS region | e.g. `us-east-1` |
+| Cloudflare Zone ID | From your domain's Overview page |
+| Cloudflare API token | From your API Tokens page |
+| Database credentials | Username and password for PostgreSQL |
+| Django admin email | Superuser login for the admin panel |
+| Django admin password | Superuser password |
+
+## What Happens Next
+
+`setup.sh` performs all provisioning automatically:
+
+1. Updates `terraform.tfvars` with your selected browser images
+2. Writes all config to `docker/.env`
+3. Runs `terraform init` and `terraform apply` — provisions VPC, subnets, security groups, ECR, ECS cluster, IAM roles, and CloudWatch log groups
+4. Terraform appends ECR registry URL, subnet ID, security group ID, and AWS credentials back to `docker/.env`
+5. Builds and pushes selected browser images to ECR via `build_browsers.sh`
+6. Builds the backend and frontend Docker images
+7. Starts all services with `docker compose up -d`
+
+## After Setup
+
+Once the stack is running, open your browser and navigate to `https://yourdomain.com`. Log in with the Django admin credentials you provided during setup.
+
+> `setup.sh` is for **first-time provisioning only**. For code updates, see [Redeploying Changes](/installation/redeployment).
+
+## Next Steps
+
+- [Reverse proxy options](/installation/reverse-proxy) — switch to Nginx or Caddy if you prefer
+- [Supported browsers](/browsers) — understand the available images
+- [Launching a session](/usage/launching-a-session) — start your first browser session

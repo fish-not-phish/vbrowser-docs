@@ -1,0 +1,29 @@
+# Multi-Factor Authentication
+
+OvB supports TOTP (Time-based One-Time Password) multi-factor authentication via django-allauth MFA. MFA is enforced on all authenticated API calls.
+
+## Setting Up MFA
+
+1. Log in to your account
+2. Navigate to **Account** → **Security**
+3. Click **Enable two-factor authentication**
+4. Scan the QR code with an authenticator app (Google Authenticator, Authy, 1Password, etc.)
+5. Enter the 6-digit code to confirm setup
+
+Once enabled, you will be prompted for your TOTP code on every login.
+
+## MFA Enforcement
+
+MFA is enforced at the API level via the `session_mfa_auth` authentication backend. Every API call to protected endpoints requires the session to have completed MFA verification. If you are logged in but have not completed MFA, API calls will return a 401.
+
+## Recovery
+
+If you lose access to your authenticator app, contact your administrator. Admins can disable MFA on a user's account from the **Admin → Users** panel.
+
+## Admin: Disabling MFA for a User
+
+1. Go to **Admin** → **Users**
+2. Find the user
+3. Click **Disable MFA**
+
+This removes their TOTP device. The user will need to re-enroll MFA on their next login.

@@ -1,12 +1,12 @@
 # Dependencies
 /node_modules
 
-# Production
-/build
+# Next.js
+/.next/
+/out/
 
-# Generated files
-.docusaurus
-.cache-loader
+# Build artifacts
+/build
 
 # Misc
 .DS_Store
@@ -18,3 +18,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# TypeScript
+tsconfig.tsbuildinfo

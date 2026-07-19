@@ -1,0 +1,49 @@
+import { Callout } from 'nextra/components'
+import ArchitectureDiagram from '../components/ArchitectureDiagram'
+
+# Open vBrowser (OvB)
+
+Open vBrowser is a **self-hosted browser isolation platform** built for cyber threat intelligence investigations, security operations, and anyone who needs to browse the internet without exposing their identity or infrastructure.
+
+Each session runs in a fully ephemeral, isolated container on **AWS ECS Fargate**. The container is destroyed when the session ends — nothing persists between sessions. A unique Cloudflare DNS subdomain is created on the fly for each session so the browser streams directly to you over HTTPS.
+
+## Why OvB?
+
+Many SOC teams and CTI analysts lack access to sandboxed browsing environments for dark/deep web investigations. Commercial alternatives are expensive and lock useful features behind paywalls. OvB provides this infrastructure at a minimal cost with full self-hosted control.
+
+Key capabilities:
+
+- **15 browser and OS images** — Chrome, Firefox, Tor, Brave, Kali Linux, and more
+- **Zero persistence** — containers are ephemeral; no cross-session state
+- **Network traffic logging** — every HTTP request captured and logged per session
+- **File protection** — downloaded files are encrypted before leaving the container
+- **Screenshots** — capture the browser viewport at any point and download from session history
+- **Case management** — organize sessions into investigation cases with notes and tags
+- **Multi-workspace support** — team and personal workspaces with role-based access
+- **MFA enforcement** — TOTP second factor required on all API calls
+- **OIDC/SSO** — optional single sign-on via Google, Okta, Azure AD, or any OIDC provider
+- **Cost tracking** — per-session Fargate compute cost estimates
+- **AWS Spot support** — optional Fargate Spot for lower costs
+
+## Architecture Overview
+
+<ArchitectureDiagram />
+
+## Status
+
+OvB is **v1.0**. It has been tested on Linux (amd64). Other platforms may work but are not officially supported.
+
+## Quick Links
+
+- [Prerequisites](/getting-started/prerequisites) — Terraform, AWS, Cloudflare
+- [Quickstart](/getting-started/quickstart) — Clone, configure, and launch
+- [Supported Browsers](/browsers) — Full image catalog
+- [GitHub Repository](https://github.com/fish-not-phish/open-vbrowser)
+
+## Legal
+
+<Callout type="warning">
+  By using vBrowser you agree to comply with all applicable laws and accept sole responsibility for your actions within the platform. The authors and contributors of vBrowser are not liable for any damages arising from use or misuse of the software.
+
+  See the [Liability & Acceptable Use](/legal/liability) page for full terms, and the [License](/legal/license) for licensing details.
+</Callout>

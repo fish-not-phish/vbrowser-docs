@@ -1,0 +1,48 @@
+# OIDC / SSO
+
+OvB supports single sign-on via OpenID Connect (OIDC). Any OIDC-compatible identity provider (IdP) can be used — there is no hard dependency on a specific vendor.
+
+## What You Need
+
+To connect an IdP, you need three things from your provider:
+
+| Value | Description |
+|---|---|
+| Provider type | One of `google`, `okta`, `azure`, or `generic` |
+| Client ID | Issued by your IdP when you register the application |
+| Client Secret | Issued alongside the Client ID |
+
+Once you supply these, vBrowser will give you a **callback URL** to register with your IdP:
+
+```
+https://yourdomain.com/accounts/oidc/<provider>/login/callback/
+```
+
+## Configuration
+
+OIDC is configured via environment variables in `docker/.env` or via the Admin Settings panel.
+
+### Environment variables
+
+```env
+OIDC_PROVIDER_TYPE=generic
+OIDC_SERVER_URL=https://your-idp-issuer-url
+OIDC_CLIENT_ID=your-client-id
+OIDC_CLIENT_SECRET=your-client-secret
+```
+
+### Admin Settings panel
+
+OIDC can also be configured from **Admin → Settings → SSO** without restarting the stack. Changes take effect immediately.
+
+## Behavior
+
+When OIDC is enabled:
+
+- A **Sign in with `<provider>`** button appears on the login page
+- New users signing in via OIDC for the first time get an account created automatically (if registration is open)
+- OIDC users still go through MFA enforcement if MFA is enabled on their account
+
+## Disabling OIDC
+
+Remove or clear the `OIDC_*` environment variables and restart the stack, or disable it from the Admin Settings panel.

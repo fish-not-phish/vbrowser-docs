@@ -1,0 +1,75 @@
+# Setup Script
+
+`terraform/setup.sh` is the first-time provisioning entrypoint. It handles everything from infrastructure provisioning to starting the application stack.
+
+> Run `setup.sh` **only once** for initial setup. For subsequent code changes, use the [redeployment workflow](/installation/redeployment).
+
+## What It Does
+
+### Step 1 — Select browser images
+
+The script prompts you to choose which browser/OS images to install. You can select individual images or install all 15. Your selection is written to `terraform/terraform.tfvars` under `docker_images`.
+
+Only selected images will have ECS task definitions created and will be pushed to ECR.
+
+### Step 2 — Collect configuration
+
+The script interactively collects:
+
+| Input | Written to |
+|---|---|
+| Domain | `docker/.env` as `CUSTOM_DOMAIN` |
+| AWS region | `docker/.env` and `terraform.tfvars` as `aws_region` |
+| Cloudflare Zone ID | `docker/.env` as `CF_Zone_ID` |
+| Cloudflare API token | `docker/.env` as `CF_Token` |
+| Database name, user, password | `docker/.env` as `DB_*` |
+| Redis URL | `docker/.env` as `REDIS_URL` |
+| Django superuser email + password | `docker/.env` as `DJANGO_SUPERUSER_*` |
+
+### Step 3 — Terraform apply
+
+Runs `terraform init` and `terraform apply -auto-approve` to provision:
+
+- VPC, public subnets, security groups
+- ECR repository
+- ECS cluster
+- IAM roles and user
+- CloudWatch log groups
+- ECS task definitions for selected browser images
+
+After apply, Terraform appends `ECR_REGISTRY`, `SUBNET_ID`, `SECURITY_GROUP_ID`, `AWS_ACCESS_KEY_ID`, and `AWS_SECRET_ACCESS_KEY` to `docker/.env`.
+
+### Step 4 — Build and push browser images
+
+Runs `docker/build_browsers.sh` for each selected image. This:
+
+1. Builds the browser Docker image from `docker/vbrowsers/{name}/`
+2. Injects Cloudflare credentials and the domain into the image at build time
+3. Pushes the image to ECR
+
+### Step 5 — Build application images
+
+Runs `docker compose build --no-cache` using `docker/docker-compose.yml` to build the Django backend and Next.js frontend images.
+
+### Step 6 — Start the stack
+
+Runs `docker compose up -d` to start all services:
+
+- `ovb_backend` — Django (Gunicorn + Daphne/ASGI)
+- `ovb_frontend` — Next.js
+- `ovb_db` — PostgreSQL 16
+- `ovb_redis` — Redis
+- `ovb_celery` — Celery worker
+- `ovb_celery_beat` — Celery beat scheduler
+
+## Secrets and Config Files
+
+| File | Status | Description |
+|---|---|---|
+| `docker/.env` | Gitignored | Written by Terraform; contains all secrets |
+| `terraform/terraform.tfvars` | Gitignored | Infrastructure config |
+| `terraform/terraform.tfstate` | Gitignored | Terraform state; contains plaintext credentials |
+| `backend/.env` | Gitignored | Copy from `backend/example.env` if needed |
+| `frontend/.env.local` | Gitignored | Copy from `frontend/example.env.local` if needed |
+
+> Never commit `terraform.tfvars`, `terraform.tfstate`, or `docker/.env`. These contain plaintext credentials.

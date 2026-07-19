@@ -1,0 +1,38 @@
+# Screenshots
+
+Screenshots let you capture the current state of a browser session as a PNG image without leaving the session viewer. The image is saved to your session and can be downloaded at any time from Session History.
+
+## Taking a Screenshot
+
+1. Open an active session in the session viewer
+2. Click the **Screenshot** button in the session toolbar
+3. The capture happens instantly — a confirmation appears when the screenshot is saved
+
+The screenshot captures the full visible browser viewport at the moment you click.
+
+## Accessing Saved Screenshots
+
+Screenshots are attached to the session they were taken in. To view or download them:
+
+1. Go to [Session History](/usage/session-history)
+2. Find the session and open its detail view
+3. Screenshots are listed in the **Screenshots** tab — click any thumbnail to download
+
+Screenshots are available for the lifetime of the session record. They are not deleted when the container stops.
+
+## Limitations
+
+| Constraint | Details |
+|---|---|
+| Format | PNG only |
+| Scope | Captures the browser viewport — not the full page or off-screen content |
+| Kali Linux | Screenshots work on Kali but capture the full desktop environment, not just the browser window |
+| Storage | Screenshots are stored server-side; very large numbers of captures per session may affect performance |
+
+## Why Take Screenshots?
+
+Screenshots are useful for:
+
+- Preserving evidence of what was seen during an investigation without downloading files
+- Documenting threat actor infrastructure, phishing pages, or suspicious content
+- Creating a lightweight audit trail alongside [network logs](/usage/network-logging)

@@ -1,0 +1,108 @@
+# Prerequisites
+
+## Terraform
+
+OvB uses Terraform to provision AWS infrastructure. Install it on a Debian/Ubuntu system:
+
+**1. Update and install prerequisites**
+
+```bash
+sudo apt-get update -y && sudo apt-get install -y gnupg software-properties-common
+```
+
+**2. Install the HashiCorp GPG key**
+
+```bash
+wget -O- https://apt.releases.hashicorp.com/gpg | \
+gpg --dearmor | \
+sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+```
+
+**3. Add the HashiCorp repository**
+
+```bash
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | \
+sudo tee /etc/apt/sources.list.d/hashicorp.list
+```
+
+**4. Install Terraform**
+
+```bash
+sudo apt update -y && sudo apt-get install -y terraform
+```
+
+For other operating systems, see the [official Terraform install guide](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli).
+
+---
+
+## AWS Credentials
+
+Terraform needs AWS credentials to provision ECS, ECR, VPC, and IAM resources.
+
+**1. Sign in to AWS**
+
+Go to [https://aws.amazon.com/console/](https://aws.amazon.com/console/). Using an IAM user (not root) with the required permissions is recommended.
+
+The IAM user needs permissions for: ECS, ECR, EC2 (VPC/subnets/security groups), IAM, CloudWatch Logs, and S3.
+
+**2. Create access keys**
+
+1. Navigate to **IAM** → **Users** → your user → **Security credentials**
+2. Click **Create access key**
+3. Copy both values:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+
+> You will only see the secret key **once**. Store it securely.
+
+**3. Export credentials**
+
+```bash
+export AWS_ACCESS_KEY_ID="your-access-key-id"
+export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
+```
+
+The AWS region is set interactively when you run `setup.sh` — no manual configuration needed.
+
+---
+
+## Cloudflare
+
+OvB uses Cloudflare to create a unique DNS A record for each browser session (`browser-{hash}.yourdomain.com` → container public IP).
+
+**1. Create a Cloudflare account**
+
+Sign up at [https://dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up). The free tier is sufficient.
+
+**2. Add your domain**
+
+Add your domain to Cloudflare and update your registrar's nameservers to the ones Cloudflare assigns.
+
+**3. Copy your Zone ID**
+
+Open your domain's **Overview** page in the Cloudflare dashboard. The Zone ID is in the bottom-right panel. Copy it.
+
+**4. Create an API token**
+
+1. Go to [https://dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens)
+2. Click **Create Token** → select the **Edit zone DNS** template
+3. Set permissions: `Zone.DNS: Edit`, scoped to your specific zone
+4. Copy the token — you will only see it once
+
+> Do **not** use the Global API Key. It grants full account access.
+
+---
+
+## Docker
+
+Docker and Docker Compose must be installed on the host running the stack.
+
+```bash
+# Install Docker Engine
+curl -fsSL https://get.docker.com | sh
+
+# Verify
+docker --version
+docker compose version
+```

@@ -1,0 +1,48 @@
+# Launching a Session
+
+## The Application Grid
+
+After logging in, you land on the main application grid for your active workspace. This grid shows all browser and OS images available to your workspace.
+
+Click any image to open the launch panel.
+
+## Launch Options
+
+| Option | Description |
+|---|---|
+| **Starting URL** | Optional URL to open when the browser starts |
+| **Fargate Spot** | Use AWS Fargate Spot capacity (cheaper, interruptible) |
+| **Network logging** | Capture all HTTP traffic for this session (if enabled for your workspace) |
+| **File protection** | Encrypt downloaded files inside the container (if enabled for your workspace) |
+
+Some images may have Spot forced on or off based on their configuration. OS-type images (e.g. Kali) may have different defaults.
+
+## Session Lifecycle
+
+1. You click a browser image and submit the launch form
+2. The backend creates a session record and queues an ECS task via Celery
+3. A Celery worker calls `ecs.run_task()` on Fargate with the selected image
+4. The loading page polls the session status until the container is running
+5. Once running, Fargate assigns a public IP to the container. The backend creates a Cloudflare DNS A record: `browser-{hash}.yourdomain.com`
+6. The callback updates the session with the live URL
+7. The loading page redirects to the live session viewer
+
+## The Live Session Viewer
+
+The session viewer embeds the browser via a KasmVNC iframe. The browser runs inside the isolated container and streams directly to your browser over HTTPS.
+
+The session viewer URL is unique to each session and authenticated by a per-session token — it cannot be accessed without it.
+
+## Closing a Session
+
+You can close a session by:
+
+- Clicking the close/stop button in the session viewer
+- Navigating to [Session History](/usage/session-history) and stopping the session from there
+- The container self-closes when the idle timeout expires (default: 10 minutes of inactivity)
+
+When a session closes, the container is stopped, the Cloudflare DNS record is deleted, and the session cost is recorded.
+
+## Concurrent Session Limits
+
+Admins can configure per-user and per-workspace limits on concurrent open sessions via [SiteSettings](/security/index#site-settings). If you hit the limit, you must close an existing session before starting a new one.

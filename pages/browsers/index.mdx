@@ -1,0 +1,31 @@
+import BrowserGrid from '../../components/BrowserGrid'
+
+# Browser Catalog
+
+OvB supports 15 browser and OS images. Each runs as an isolated ECS Fargate container and streams to you via KasmVNC over HTTPS.
+
+<BrowserGrid />
+
+## Feature Availability
+
+Not all features are available for all images:
+
+| Feature | Unsupported images |
+|---|---|
+| Network traffic logging | Kali, Tor, Telegram |
+| File protection | Kali |
+
+## Resource Allocation
+
+Browser and OS images use separate resource allocations configured in [SiteSettings](/security/index#site-settings):
+
+- **Browser images** — `browser_vcpu` and `browser_memory_gb`
+- **OS images** (Kali) — `os_vcpu` and `os_memory_gb`
+
+OS images use higher defaults because they run a full desktop environment.
+
+## Selecting Images at Setup
+
+During `setup.sh`, you are prompted to select which images to install. Your selection is written to `terraform/terraform.tfvars` under `docker_images`. Only selected images will have ECS task definitions created and Docker images built and pushed to ECR.
+
+To add images later, update `docker_images` in `terraform.tfvars` and re-run `terraform apply`, then rebuild with `build_browsers.sh`.

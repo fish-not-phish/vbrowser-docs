@@ -1,0 +1,70 @@
+# Docker Images
+
+Each browser/OS image is a self-contained Docker image stored in ECR. When a session is launched, ECS pulls the image and runs it as a Fargate task.
+
+## Image Structure
+
+Each image lives in `docker/vbrowsers/{name}/`:
+
+```
+docker/vbrowsers/chrome/
+├── Dockerfile       # Image definition
+└── 1-app.sh         # Container startup script
+```
+
+`1-app.sh` runs inside the container on startup. It:
+
+1. Creates a dynamic Cloudflare DNS A record pointing to the container's public IP
+2. Starts KasmVNC — the VNC-over-websockets server that streams the browser to the user's browser
+
+Cloudflare credentials (`CF_API_TOKEN`, `CF_ZONE_ID`) and `CUSTOM_DOMAIN` are **placeholder values** in source control. Real values are injected at build time by `build_browsers.sh`.
+
+## Building Images
+
+`docker/build_browsers.sh` builds and pushes images to ECR. It is called automatically by `setup.sh` during initial provisioning.
+
+To build and push images manually:
+
+```bash
+cd docker
+./build_browsers.sh
+```
+
+The script:
+
+1. Authenticates with ECR using your AWS credentials
+2. For each selected image in `terraform.tfvars`:
+   - Builds the image with real Cloudflare and domain values injected as build arguments
+   - Tags and pushes it to ECR
+
+## Adding a Custom Image
+
+All vBrowser images are built on top of the `vbrowser/selkies-baseimage:ubuntu` base image, which itself is derived from the [LinuxServer.io](https://www.linuxserver.io/) selkies baseimage. Credit to the LinuxServer.io team for their excellent work on the base infrastructure.
+
+Your `Dockerfile` should start with:
+
+```dockerfile
+FROM vbrowser/selkies-baseimage:ubuntu
+```
+
+For a detailed reference on how the base image works and how to extend it, see the [linuxserver/docker-baseimage-selkies](https://github.com/linuxserver/docker-baseimage-selkies) repository.
+
+To add a new browser image:
+
+1. Create a directory at `docker/vbrowsers/{name}/`
+2. Add a `Dockerfile` starting with `FROM vbrowser/selkies-baseimage:ubuntu` — see the [baseimage reference](https://github.com/linuxserver/docker-baseimage-selkies) or an existing image (e.g. `chrome`) for guidance
+3. Add a `1-app.sh` startup script using `CF_API_TOKEN`, `CF_ZONE_ID`, and `CUSTOM_DOMAIN` as build-time placeholders
+4. Add the image name to `docker_images` in `terraform/terraform.tfvars`
+5. Run `terraform apply` to create the ECS task definition
+6. Run `build_browsers.sh` to build and push the image
+
+## Updating an Existing Image
+
+After modifying a browser's `Dockerfile` or `1-app.sh`:
+
+```bash
+cd docker
+./build_browsers.sh
+```
+
+Then redeploy to pick up the new image on the next session launch. Running ECS tasks continue using the old image until they stop.

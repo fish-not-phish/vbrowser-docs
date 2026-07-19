@@ -1,0 +1,46 @@
+# Network Logging
+
+Network logging captures every HTTP request made from inside a browser session. This is useful for CTI investigations — you can see exactly what hosts and URLs the browser contacted without needing to analyze packet captures.
+
+## How It Works
+
+When network logging is enabled for a session, a **mitmproxy** instance runs inside the container alongside the browser. All HTTP/HTTPS traffic from the browser is routed through mitmproxy, which extracts and forwards:
+
+- HTTP method (GET, POST, etc.)
+- Host
+- Full URL
+- Timestamp
+
+This data is shipped back to the backend as `TrafficEvent` records, associated with the session.
+
+## Limitations
+
+Network logging is **not supported** on the following images because they route traffic in ways that are incompatible with mitmproxy:
+
+| Image | Reason |
+|---|---|
+| Tor Browser | Traffic goes through Tor; mitmproxy cannot intercept |
+| Telegram | Not a web browser |
+| Kali Linux | Full OS; mitmproxy is not injected |
+
+## Enabling Network Logging
+
+Network logging can be enabled or disabled at three levels:
+
+1. **Global (SiteSettings)** — admin enables/disables it platform-wide
+2. **Workspace** — workspace owners/admins can override the global setting
+3. **Per session** — if allowed by the workspace, users can toggle it at launch time
+
+If the feature is disabled at a higher level, it cannot be enabled at a lower one.
+
+## Viewing Traffic Logs
+
+1. Go to [Session History](/usage/session-history)
+2. Click on a completed or active session
+3. Expand the **Network Logs** section in the detail panel
+
+Each entry shows the timestamp, HTTP method, host, and full URL.
+
+## Privacy and Data Retention
+
+Traffic logs are stored in the PostgreSQL database. They are associated with the session and accessible to workspace members with sufficient permissions. There is currently no automatic expiry — logs are retained until the session record is deleted.

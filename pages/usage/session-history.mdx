@@ -1,0 +1,67 @@
+# Session History
+
+The Session History page shows all past and active sessions in the current workspace.
+
+## What's Recorded
+
+For every session, OvB records:
+
+| Field | Description |
+|---|---|
+| Browser/OS image | Which image was used |
+| Start time | When the session started |
+| End time | When the session closed |
+| Duration | Total session length |
+| Status | `pending`, `active`, `closed`, `error` |
+| Starting URL | URL passed at launch (if any) |
+| Fargate Spot | Whether Spot capacity was used |
+| Estimated cost | Fargate compute cost in USD |
+| Network logs | HTTP traffic captured during the session |
+| Tags | Any tags applied to the session |
+| Case | Linked case (if any) |
+| Notes | Rich-text session note (if created) |
+
+## Session Status
+
+| Status | Meaning |
+|---|---|
+| `pending` | Container is starting; ECS task not yet running |
+| `active` | Container is running and the session is live |
+| `closed` | Container has stopped; session is complete |
+| `error` | Something went wrong during startup or shutdown |
+
+## Stopping an Active Session
+
+From the history page, click the stop button on any active session. This sends a stop request to the backend, which terminates the ECS task and deletes the Cloudflare DNS record.
+
+## Cost Tracking
+
+Session cost is calculated from the actual Fargate vCPU and memory used by the container, read at stop time:
+
+```
+cost = (vcpu × vcpu_rate × hours) + (memory_gb × memory_rate × hours)
+```
+
+The rates are configured via environment variables:
+
+| Variable | Default | Description |
+|---|---|---|
+| `FARGATE_VCPU_PER_HOUR_USD` | `0.04048` | Cost per vCPU-hour |
+| `FARGATE_MEMORY_GB_PER_HOUR_USD` | `0.004445` | Cost per GB-hour |
+| `FARGATE_SPOT_DISCOUNT` | `0.70` | Multiplier applied to Spot sessions (30% discount) |
+
+Costs are estimates. Your actual AWS bill may differ due to data transfer, ECR storage, and other charges not tracked here.
+
+## Filtering and Search
+
+The history page supports filtering by:
+
+- Date range
+- Browser/OS image
+- Session status
+- Tags
+- Case
+
+## Viewing Traffic Logs
+
+If [network logging](/usage/network-logging) was enabled for a session, a traffic log is available in the session detail view. Click a session row to open the detail panel, then expand the **Network Logs** section.

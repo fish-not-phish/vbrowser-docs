@@ -1,0 +1,161 @@
+/* ── vBrowser brand palette ────────────────────────────────────────────────── */
+/* Primary pink: #CF7287  → hsl(349, 47%, 63%)                                */
+/* Background:   #0d0d14  → rgb(13, 13, 20)                                   */
+/* Surface:      #12121e  → used for sidebar / nav blur                        */
+/* Surface-2:    #1a1a2e  → code blocks, hover states                          */
+
+:root {
+  /* Nextra primary color system (HSL components, space-separated) */
+  --nextra-primary-hue:        349;
+  --nextra-primary-saturation: 47%;
+  --nextra-primary-lightness:  63%;
+
+  /* Nextra background — used as rgb(var(--nextra-bg)) throughout the theme */
+  --nextra-bg: 13, 13, 20;
+}
+
+/* Force dark mode at the HTML level so Nextra dark-mode classes always apply */
+html {
+  color-scheme: dark;
+}
+
+/* ── Page background & text ─────────────────────────────────────────────────── */
+body,
+.nextra-nav-container-blur,
+.nextra-sidebar-footer {
+  background-color: #0d0d14 !important;
+}
+
+/* Main content area */
+.nextra-content {
+  color: #d4b8bf !important;   /* slightly softened pink-white for body text */
+}
+
+/* ── Navbar ─────────────────────────────────────────────────────────────────── */
+.nextra-nav-container-blur {
+  background-color: rgba(13, 13, 20, 0.85) !important;
+  border-bottom: 1px solid rgba(207, 114, 135, 0.15) !important;
+  box-shadow: none !important;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────────── */
+.nextra-sidebar-container,
+aside.nextra-sidebar-container {
+  background-color: #0d0d14 !important;
+  border-right: 1px solid rgba(207, 114, 135, 0.12) !important;
+}
+
+/* Sidebar footer */
+.nextra-sidebar-footer {
+  border-top: 1px solid rgba(207, 114, 135, 0.12) !important;
+  box-shadow: 0 -12px 16px rgb(13, 13, 20) !important;
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────────────── */
+table {
+  border-color: rgba(207, 114, 135, 0.2) !important;
+}
+thead tr {
+  border-bottom-color: rgba(207, 114, 135, 0.2) !important;
+}
+tbody tr {
+  border-bottom-color: rgba(207, 114, 135, 0.1) !important;
+}
+thead th {
+  color: #CF7287 !important;
+  background-color: rgba(207, 114, 135, 0.06) !important;
+}
+
+/* ── Code blocks ─────────────────────────────────────────────────────────────── */
+pre {
+  background-color: #12121e !important;
+  border: 1px solid rgba(207, 114, 135, 0.15) !important;
+  border-radius: 6px !important;
+}
+
+/* Inline code */
+:not(pre) > code {
+  background-color: rgba(207, 114, 135, 0.12) !important;
+  border-color: rgba(207, 114, 135, 0.2) !important;
+  color: #CF7287 !important;
+}
+
+/* ── Headings (docs only) ────────────────────────────────────────────────────── */
+.nextra-content h1, .nextra-content h2, .nextra-content h3, .nextra-content h4 {
+  color: #e8b4bf !important;
+}
+
+.nextra-content h2 {
+  border-bottom: 1px solid rgba(207, 114, 135, 0.2) !important;
+  padding-bottom: 0.4rem;
+}
+
+/* ── Links ───────────────────────────────────────────────────────────────────── */
+a:not([class]) {
+  color: #CF7287;
+  text-decoration-color: rgba(207, 114, 135, 0.4);
+}
+a:not([class]):hover {
+  color: #e8a0af;
+  text-decoration-color: rgba(207, 114, 135, 0.8);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(207, 114, 135, 0.3);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(207, 114, 135, 0.6);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(207, 114, 135, 0.3) transparent;
+}
+
+/* ── Tailwind font-size utility passthrough ──────────────────────────────────── */
+/* Nextra bundles an unlayered Tailwind v3 preflight that resets h1-h6 to
+   font-size:inherit, which beats Tailwind v4's @layer utilities. These
+   unlayered rules restore the correct sizes so the landing page headings render. */
+.text-xs  { font-size: .75rem !important; }
+.text-sm  { font-size: .875rem !important; }
+.text-base{ font-size: 1rem !important; }
+.text-lg  { font-size: 1.125rem !important; }
+.text-xl  { font-size: 1.25rem !important; }
+.text-2xl { font-size: 1.5rem !important; }
+.text-3xl { font-size: 1.875rem !important; }
+.text-4xl { font-size: 2.25rem !important; }
+.text-5xl { font-size: 3rem !important; }
+.text-6xl { font-size: 3.75rem !important; }
+@media (min-width: 640px) {
+  .sm\:text-lg  { font-size: 1.125rem !important; }
+  .sm\:text-xl  { font-size: 1.25rem !important; }
+  .sm\:text-2xl { font-size: 1.5rem !important; }
+  .sm\:text-3xl { font-size: 1.875rem !important; }
+  .sm\:text-4xl { font-size: 2.25rem !important; }
+  .sm\:text-5xl { font-size: 3rem !important; }
+}
+@media (min-width: 1024px) {
+  .lg\:text-4xl { font-size: 2.25rem !important; }
+  .lg\:text-\[3\.75rem\] { font-size: 3.75rem !important; }
+}
+
+/* ── Text selection ──────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(207, 114, 135, 0.3);
+  color: inherit;
+}
+
+/* ── TOC (right panel) ───────────────────────────────────────────────────────── */
+.nextra-toc-footer {
+  border-top: 1px solid rgba(207, 114, 135, 0.12) !important;
+  box-shadow: 0 -12px 16px rgb(13, 13, 20) !important;
+  background-color: #0d0d14 !important;
+}
+
+

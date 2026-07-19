@@ -1,0 +1,49 @@
+# File Protection
+
+File protection encrypts files downloaded inside a browser session before they can leave the container. This prevents accidentally executing malicious files and ensures downloads are handled intentionally.
+
+## How It Works
+
+When file protection is enabled for a session, any file downloaded inside the browser is automatically encrypted with **7-Zip AES-256 encryption** inside the container. The encrypted archive (`.7z`) is what gets transferred to the user instead of the raw file.
+
+To access the file contents, you must decrypt it with the session-specific password using 7-Zip or a compatible tool.
+
+## Limitations
+
+| Constraint | Details |
+|---|---|
+| Maximum file size | 10 MB. Files larger than 10 MB may stall or fail during encryption due to the double-processing overhead. |
+| Kali Linux | File protection is not supported on Kali (full OS image). |
+| File format | All protected files are delivered as `.7z` archives regardless of original format. |
+
+## Enabling File Protection
+
+Like network logging, file protection can be enabled at three levels:
+
+1. **Global (SiteSettings)** — admin enables/disables it platform-wide
+2. **Workspace** — workspace owners/admins can override the global setting
+3. **Per session** — if allowed by the workspace, users can toggle it at launch time
+
+## Decrypting a Protected File
+
+You will need 7-Zip or a compatible tool. The decryption password is provided in the session interface.
+
+**Linux/macOS:**
+
+```bash
+7z x downloaded-file.7z
+```
+
+Enter the password when prompted.
+
+**Windows:**
+
+Right-click the `.7z` file → **7-Zip** → **Extract here**, then enter the password.
+
+## Why Use File Protection?
+
+Encrypted delivery ensures:
+
+- You cannot accidentally double-click and execute a malware sample
+- Files from high-risk sites are contained until you consciously choose to decrypt them
+- There is a clear audit trail (the encrypted file) of what was retrieved during the session

@@ -1,0 +1,66 @@
+# Redeploying & Teardown
+
+## Redeploying Code Changes
+
+After modifying backend or frontend code, rebuild and restart the stack. Use whichever compose file you are currently running:
+
+```bash
+cd docker
+docker compose -f docker-compose.traefik.yml build --no-cache
+docker compose -f docker-compose.traefik.yml up -d --force-recreate
+```
+
+> `docker compose restart` does **not** re-read `.env`. Always use `--force-recreate` when environment variables have changed.
+
+If you are only rebuilding specific services, you can pass the service name:
+
+```bash
+docker compose -f docker-compose.traefik.yml build --no-cache ovb_backend
+docker compose -f docker-compose.traefik.yml up -d --force-recreate ovb_backend
+```
+
+### Adding or Removing Browser Images
+
+To add or remove images from your deployment:
+
+1. Edit `terraform/terraform.tfvars` — update the `docker_images` list
+2. Run `terraform apply` to update ECS task definitions:
+   ```bash
+   cd terraform
+   terraform apply
+   ```
+3. Run `build_browsers.sh` for newly added images:
+   ```bash
+   cd docker
+   ./build_browsers.sh
+   ```
+
+---
+
+## Environment Variable Changes
+
+If you need to update secrets or configuration in `docker/.env`:
+
+1. Edit `docker/.env` directly
+2. Restart the affected services with `--force-recreate`:
+   ```bash
+   cd docker
+   docker compose -f docker-compose.traefik.yml up -d --force-recreate
+   ```
+
+---
+
+## Destroying the Deployment
+
+To tear everything down — all AWS resources, ECS tasks, ECR images, and local containers:
+
+```bash
+cd terraform
+./destroy.sh
+```
+
+This runs `terraform destroy` to remove all Terraform-managed AWS infrastructure and stops all Docker containers.
+
+> Any active browser sessions will be terminated immediately. Stored data in PostgreSQL (sessions, cases, notes) will be lost unless you have backed up the database volume.
+
+To redeploy from scratch after destroying, run `./setup.sh` again.

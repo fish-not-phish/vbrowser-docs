@@ -1,0 +1,34 @@
+# Getting Started
+
+OvB is deployed with a single interactive setup script that provisions all AWS infrastructure via Terraform, builds your selected browser images, and starts the application stack with Docker Compose.
+
+## What You Need
+
+Before running the setup script you must have the following ready:
+
+| Requirement | Purpose |
+|---|---|
+| Linux host (amd64) | Running the Docker Compose stack |
+| [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) | Provisioning AWS infrastructure |
+| Docker + Docker Compose | Running the application |
+| AWS account with IAM credentials | ECS Fargate, ECR, VPC, IAM |
+| Domain on Cloudflare | Per-session DNS A records |
+
+## Supported Platforms
+
+| Architecture | Platform | Supported | Notes |
+|---|---|---|---|
+| `amd64` | Linux | Yes | Fully tested |
+| `amd64` | Windows | Likely | Untested |
+| `aarch64` / `arm64` | Linux | Likely | Untested |
+
+> All documentation assumes **Linux (amd64)**.
+
+## Setup Flow
+
+1. [Install prerequisites](/getting-started/prerequisites) — Terraform, AWS credentials, Cloudflare
+2. Clone the repository
+3. Export AWS credentials
+4. Run `./terraform/setup.sh` — interactive; prompts for all remaining config
+
+See the [Quickstart](/getting-started/quickstart) for the complete step-by-step walkthrough.

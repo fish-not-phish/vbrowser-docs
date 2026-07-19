@@ -1,0 +1,63 @@
+# Cases
+
+Cases let you organize browser sessions into structured investigations. Each case can contain linked sessions, notes, tags, comments, and file attachments.
+
+## Creating a Case
+
+1. Navigate to **Cases** in your workspace sidebar
+2. Click **New case**
+3. Enter a name and optional description
+4. Choose a status: `open`, `closed`, or `archived`
+
+## Case Status
+
+| Status | Meaning |
+|---|---|
+| `open` | Active investigation |
+| `closed` | Investigation complete |
+| `archived` | Preserved for record-keeping; no longer active |
+
+## Linking Sessions to a Case
+
+Sessions can be linked to a case from the session detail view in [Session History](/usage/session-history). A single session can belong to one case.
+
+## Tags
+
+Tags are colored labels you can apply to sessions to categorize them (e.g. by threat actor, campaign, or topic). Tags are scoped to the workspace.
+
+To create a tag:
+
+1. Go to **Cases** → **Tags**
+2. Click **New tag**, enter a name, and pick a color
+
+To apply a tag to a session, open the session in history and select tags from the detail panel.
+
+## Session Notes
+
+Each session can have a rich-text note attached to it. Notes are written with the BlockNote editor, which supports:
+
+- Headings and paragraphs
+- Bullet and numbered lists
+- Bold, italic, and other inline formatting
+- Code blocks
+
+Notes are stored per-session and are accessible from the session detail view.
+
+## Case Comments
+
+Cases have a comment thread for team collaboration. Any workspace member can add comments.
+
+## File Attachments
+
+Files can be attached directly to cases (not individual sessions). Attachments are limited to 50 MB per file and are stored on the server's local filesystem by default. If `AWS_STORAGE_BUCKET_NAME` is configured, attachments are stored in S3 instead.
+
+## Case Detail View
+
+The case detail page shows:
+
+- Case metadata (name, description, status, created date)
+- All linked sessions with summary info
+- Comment thread
+- File attachments
+
+From here you can also change the case status or edit the description.

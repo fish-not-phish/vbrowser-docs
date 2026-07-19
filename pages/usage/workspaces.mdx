@@ -1,0 +1,56 @@
+# Workspaces
+
+Workspaces are the top-level organizational unit in OvB. All sessions, cases, and settings belong to a workspace.
+
+## Types of Workspaces
+
+| Type | Description |
+|---|---|
+| **Personal** | Created automatically when a user signs up. Private to the user. |
+| **Team** | Shared workspaces with multiple members. Requires admin permission to enable. |
+
+Whether personal or team workspaces can be created is controlled by the admin.
+
+## Roles
+
+| Role | Permissions |
+|---|---|
+| `owner` | Full control: manage members, settings, and sessions |
+| `admin` | Manage members and settings; cannot transfer ownership |
+| `member` | Launch sessions, view history, manage their own cases |
+
+## Creating a Workspace
+
+If workspace creation is enabled by the admin:
+
+1. Go to **Workspaces** in the sidebar
+2. Click **Create workspace**
+3. Enter a name and confirm
+
+The creator becomes the workspace owner.
+
+## Managing Members
+
+Workspace owners and admins can:
+
+- Invite users by email or username
+- Change a member's role
+- Remove members
+
+## Workspace Settings
+
+Each workspace has independent settings that can override the global defaults:
+
+| Setting | Description |
+|---|---|
+| Browser allowlist | Restrict which browsers/OS images members can use |
+| Idle timeout | Override the default session idle timeout |
+| Concurrent session limit | Maximum simultaneous open sessions per user |
+| Network logging | Enable or disable traffic logging for this workspace |
+| File protection | Enable or disable encrypted file downloads for this workspace |
+
+Workspace-level settings take precedence over global defaults (SiteSettings) when set.
+
+## Switching Workspaces
+
+Use the workspace switcher in the sidebar to move between workspaces. Sessions and cases are scoped to the workspace they were created in.

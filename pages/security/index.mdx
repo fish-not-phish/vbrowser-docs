@@ -1,0 +1,74 @@
+# Security Overview
+
+## Isolation Model
+
+Every browser session in OvB runs in a fully isolated AWS ECS Fargate container. Key isolation properties:
+
+- **No persistent storage** — the container filesystem is ephemeral. When the session ends, the container is destroyed and nothing is written back to any shared volume.
+- **Dedicated public IP** — each container gets its own public IP via Fargate's ENI assignment. There is no shared networking between sessions.
+- **Per-session DNS** — a unique subdomain (`browser-{hash}.yourdomain.com`) is created for each session and deleted when it ends.
+- **Session tokens** — each container receives a unique token for self-close and traffic reporting. User cookies are never passed to the container.
+
+## Admin Settings (SiteSettings)
+
+Admins configure platform-wide behavior from the **Admin → Settings** panel. All settings are stored in the `SiteSettings` singleton in the database.
+
+### Access Control
+
+| Setting | Description |
+|---|---|
+| User registration | Open or closed. When closed, only admins can create accounts. |
+| Allow workspace creation | Whether regular users can create team workspaces |
+| Allow personal workspaces | Whether users automatically get a personal workspace |
+| MFA enforcement | Require TOTP on all accounts (coming) |
+
+### Browser Allowlists
+
+Admins can restrict which browser/OS images are available globally. Workspace owners can further restrict this per-workspace.
+
+### Session Limits
+
+| Setting | Description |
+|---|---|
+| Max concurrent sessions per user | Global cap on simultaneously open sessions |
+| Max workspaces per user | Cap on how many workspaces a user can own |
+
+### Resource Provisioning
+
+ECS task resource overrides are set per image type:
+
+| Setting | Description |
+|---|---|
+| `browser_vcpu` | vCPU allocated to browser-type images |
+| `browser_memory_gb` | Memory (GB) allocated to browser-type images |
+| `os_vcpu` | vCPU allocated to OS-type images (e.g. Kali) |
+| `os_memory_gb` | Memory (GB) allocated to OS-type images |
+
+These are injected as ECS task-level overrides at launch time.
+
+### Feature Flags
+
+| Setting | Description |
+|---|---|
+| Network logging | Enable/disable globally |
+| File protection | Enable/disable globally |
+| Fargate Spot | Allow users to opt into Spot capacity |
+
+### OIDC / SSO
+
+See [OIDC / SSO](/security/oidc-sso) for configuration details.
+
+## Transport Security
+
+In production, all traffic between users and the application should go through HTTPS. Set the following environment variables in `docker/.env` when running behind a TLS-terminating reverse proxy:
+
+```env
+SECURE_SSL_REDIRECT=1
+SESSION_COOKIE_SECURE=1
+CSRF_COOKIE_SECURE=1
+SECURE_HSTS_SECONDS=31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS=1
+SECURE_HSTS_PRELOAD=1
+```
+
+The browser containers themselves stream over HTTPS via KasmVNC, using the Cloudflare-managed TLS certificate for your domain.

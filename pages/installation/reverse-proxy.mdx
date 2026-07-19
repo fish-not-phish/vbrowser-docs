@@ -1,0 +1,100 @@
+# Reverse Proxy
+
+OvB provides three reverse proxy options. All are in the `docker/` directory as separate compose files.
+
+| Compose file | Reverse proxy | TLS method |
+|---|---|---|
+| `docker-compose.traefik.yml` | Traefik | Cloudflare DNS challenge (automatic) |
+| `docker-compose.nginx.yml` | Nginx + Certbot | Let's Encrypt HTTP challenge |
+| `docker-compose.caddy.yml` | Caddy | Let's Encrypt HTTP challenge (automatic) |
+| `docker-compose.yml` | None | Used by `setup.sh` for initial provisioning only |
+
+---
+
+## Traefik (Recommended)
+
+Traefik uses the Cloudflare DNS challenge to automatically obtain and renew TLS certificates. No manual certificate management is required.
+
+**Requirements:** `CF_Zone_ID` and `CF_Token` must be set in `docker/.env` (they are written there by `setup.sh`).
+
+```bash
+cd docker
+docker compose -f docker-compose.traefik.yml up -d
+```
+
+Traefik handles certificate issuance and renewal automatically on startup.
+
+---
+
+## Nginx + Certbot
+
+Nginx requires a two-step startup: first obtain the certificate over HTTP, then enable HTTPS.
+
+**1. Configure the domain**
+
+Edit `docker/nginx/nginx.conf` and replace every occurrence of `OVB_DOMAIN` with your domain.
+
+**2. Add the Certbot email**
+
+Add `CERTBOT_EMAIL=your@email.com` to `docker/.env`.
+
+**3. Start in HTTP-only mode**
+
+The HTTPS `server { }` block in `nginx.conf` is commented out by default. Start the stack first:
+
+```bash
+cd docker
+docker compose -f docker-compose.nginx.yml up -d
+```
+
+**4. Obtain the initial certificate**
+
+```bash
+docker compose -f docker-compose.nginx.yml run --rm ovb_certbot
+```
+
+**5. Enable HTTPS**
+
+Uncomment the HTTPS `server { }` block in `docker/nginx/nginx.conf`, then reload:
+
+```bash
+docker compose -f docker-compose.nginx.yml exec ovb_nginx nginx -s reload
+```
+
+**Renewing certificates**
+
+```bash
+docker compose -f docker-compose.nginx.yml run --rm ovb_certbot renew
+docker compose -f docker-compose.nginx.yml exec ovb_nginx nginx -s reload
+```
+
+---
+
+## Caddy
+
+Caddy automatically obtains and renews certificates via Let's Encrypt.
+
+**1. Configure the domain**
+
+Edit `docker/Caddyfile` and replace `example.com` with your domain.
+
+**2. Start the stack**
+
+```bash
+cd docker
+docker compose -f docker-compose.caddy.yml up -d
+```
+
+Caddy handles everything else automatically.
+
+---
+
+## Switching Reverse Proxies
+
+To switch from one proxy to another, stop the current stack and start with the new compose file:
+
+```bash
+cd docker
+docker compose -f docker-compose.traefik.yml down
+docker compose -f docker-compose.caddy.yml up -d
+```
