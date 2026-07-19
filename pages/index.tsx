@@ -16,6 +16,7 @@ import {
   ChevronRightIcon,
   StarIcon,
   ZapIcon,
+  PlayCircleIcon,
 } from 'lucide-react'
 
 import VBrowserLogo from '@/landing/svg/vbrowser-logo'
@@ -348,6 +349,13 @@ export default function LandingPage() {
               >
                 Read the docs
                 <ArrowRightIcon className='size-4' />
+              </Link>
+              <Link
+                href='/usage/launching-a-session'
+                className='inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/8 px-6 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/12'
+              >
+                <PlayCircleIcon className='size-4' />
+                Watch a session
               </Link>
             </div>
 

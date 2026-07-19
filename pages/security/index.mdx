@@ -11,6 +11,13 @@ Every browser session in OvB runs in a fully isolated AWS ECS Fargate container.
 
 ## Admin Settings (SiteSettings)
 
+<video
+  src="/videos/global-settings.mp4"
+  controls
+  playsInline
+  style={{ width: '100%', borderRadius: '8px', marginBottom: '1.5rem' }}
+/>
+
 Admins configure platform-wide behavior from the **Admin → Settings** panel. All settings are stored in the `SiteSettings` singleton in the database.
 
 ### Access Control
@@ -57,6 +64,17 @@ These are injected as ECS task-level overrides at launch time.
 ### OIDC / SSO
 
 See [OIDC / SSO](/security/oidc-sso) for configuration details.
+
+## User Management
+
+<video
+  src="/videos/global-users.mp4"
+  controls
+  playsInline
+  style={{ width: '100%', borderRadius: '8px', marginBottom: '1.5rem' }}
+/>
+
+Admins can manage all user accounts from **Admin → Users**. From here you can create accounts, reset passwords, assign staff or superuser privileges, and deactivate users.
 
 ## Transport Security
 
