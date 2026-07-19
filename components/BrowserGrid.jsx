@@ -17,7 +17,7 @@ const BROWSERS = [
   // Comms
   { slug: 'telegram',  name: 'Telegram',         category: 'Comms',    desc: 'Telegram Desktop client' },
   // VPN
-  { slug: 'pulse',     name: 'Pulse Secure',     category: 'VPN',      desc: 'Pulse Secure VPN client' },
+  { slug: 'pulse',     name: 'Pulse Browser',    category: 'Browser',  desc: 'Chromium-based browser' },
 ]
 
 const CATEGORY_COLORS = {
