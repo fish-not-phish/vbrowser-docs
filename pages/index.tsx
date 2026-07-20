@@ -562,7 +562,6 @@ cd open-vbrowser
               </h2>
               <p className='mt-6 text-center text-sm text-muted-foreground sm:text-base leading-relaxed'>
                 Free, open source, and fully under your control. Deploy in minutes on any Linux host.
-                No accounts, no cloud, no compromises.
               </p>
               <div className='mt-8 flex flex-wrap items-center justify-center gap-3'>
                 <Link
