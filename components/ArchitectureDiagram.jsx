@@ -87,7 +87,7 @@ const rawNodes = [
   { id: 'worker',   type: 'arch', position: { x: 0, y: 0 }, data: { type: 'celery',    label: 'Celery Worker',       sub: 'Starts · stops containers'      } },
   { id: 'beat',     type: 'arch', position: { x: 0, y: 0 }, data: { type: 'celery',    label: 'Celery Beat',         sub: '60s idle checker'               } },
   { id: 'ecr',      type: 'arch', position: { x: 0, y: 0 }, data: { type: 'aws',       label: 'AWS ECR',             sub: 'Browser image registry'         } },
-  { id: 'ecs',      type: 'arch', position: { x: 0, y: 0 }, data: { type: 'container', label: 'AWS ECS Fargate',     sub: 'KasmVNC · browser/OS · per-session' } },
+  { id: 'ecs',      type: 'arch', position: { x: 0, y: 0 }, data: { type: 'container', label: 'AWS ECS Fargate',     sub: 'Selkies · browser/OS · per-session' } },
   { id: 'cfdns',    type: 'arch', position: { x: 0, y: 0 }, data: { type: 'cf',        label: 'Cloudflare DNS',      sub: 'Per-session A record'           } },
 ]
 
