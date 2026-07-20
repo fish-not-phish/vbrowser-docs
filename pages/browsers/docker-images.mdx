@@ -15,7 +15,7 @@ docker/vbrowsers/chrome/
 `1-app.sh` runs inside the container on startup. It:
 
 1. Creates a dynamic Cloudflare DNS A record pointing to the container's public IP
-2. Starts KasmVNC — the VNC-over-websockets server that streams the browser to the user's browser
+2. Starts Selkies — the VNC-over-websockets server that streams the browser to the user's browser
 
 Cloudflare credentials (`CF_API_TOKEN`, `CF_ZONE_ID`) and `CUSTOM_DOMAIN` are **placeholder values** in source control. Real values are injected at build time by `build_browsers.sh`.
 
