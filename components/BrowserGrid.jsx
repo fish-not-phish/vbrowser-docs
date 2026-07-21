@@ -13,11 +13,15 @@ const BROWSERS = [
   { slug: 'waterfox',  name: 'Waterfox',         category: 'Browser',  desc: 'Firefox fork' },
   { slug: 'zen',       name: 'Zen Browser',      category: 'Browser',  desc: 'Firefox-based browser' },
   // Security
-  { slug: 'kali',      name: 'Kali Linux',       category: 'Security', desc: 'Full Kali Linux desktop' },
+  { slug: 'kali',        name: 'Kali Linux',       category: 'Security', desc: 'Full Kali Linux desktop' },
+  { slug: 'ubuntu',      name: 'Ubuntu',           category: 'Security', desc: 'Ubuntu Linux desktop' },
   // Comms
-  { slug: 'telegram',  name: 'Telegram',         category: 'Comms',    desc: 'Telegram Desktop client' },
+  { slug: 'telegram',    name: 'Telegram',         category: 'Comms',    desc: 'Telegram Desktop client' },
+  // Tools
+  { slug: 'code-server', name: 'code-server',      category: 'Tools',    desc: 'VS Code in the browser' },
+  { slug: 'terminal',    name: 'Terminal',         category: 'Tools',    desc: 'Browser-based terminal' },
   // VPN
-  { slug: 'pulse',     name: 'Pulse Browser',    category: 'Browser',  desc: 'Chromium-based browser' },
+  { slug: 'pulse',       name: 'Pulse Browser',    category: 'Browser',  desc: 'Chromium-based browser' },
 ]
 
 const CATEGORY_COLORS = {
@@ -25,6 +29,7 @@ const CATEGORY_COLORS = {
   Security: { badge: 'rgba(114,135,207,0.15)', text: '#7287CF', border: 'rgba(114,135,207,0.3)' },
   Comms:    { badge: 'rgba(114,207,135,0.15)', text: '#72CF87', border: 'rgba(114,207,135,0.3)' },
   VPN:      { badge: 'rgba(207,175,114,0.15)', text: '#CFAF72', border: 'rgba(207,175,114,0.3)' },
+  Tools:    { badge: 'rgba(114,197,207,0.15)', text: '#72C5CF', border: 'rgba(114,197,207,0.3)' },
 }
 
 export default function BrowserGrid() {
