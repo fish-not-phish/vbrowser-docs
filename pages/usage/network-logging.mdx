@@ -15,13 +15,16 @@ This data is shipped back to the backend as `TrafficEvent` records, associated w
 
 ## Limitations
 
-Network logging is **not supported** on the following images because they route traffic in ways that are incompatible with mitmproxy:
+Network logging is **not supported** on certain images. See the [browser catalog](/browsers) for the full list of available images.
 
 | Image | Reason |
 |---|---|
 | Tor Browser | Traffic goes through Tor; mitmproxy cannot intercept |
 | Telegram | Not a web browser |
 | Kali Linux | Full OS; mitmproxy is not injected |
+| Ubuntu | Full OS; mitmproxy is not injected |
+| Terminal | Not a web browser |
+| Code-server | Not a web browser |
 
 ## Enabling Network Logging
 
