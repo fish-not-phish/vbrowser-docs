@@ -25,19 +25,17 @@ Like network logging, file protection can be enabled at three levels:
 
 ## Decrypting a Protected File
 
-You will need 7-Zip or a compatible tool. The decryption password is provided in the session interface.
+You will need 7-Zip or a compatible tool. The password for all protected archives is **`infected`**.
 
 **Linux/macOS:**
 
 ```bash
-7z x filename-PROTECTED.7z
+7z x filename-PROTECTED.7z -pinfected
 ```
-
-Enter the password when prompted.
 
 **Windows:**
 
-Right-click the `.7z` file → **7-Zip** → **Extract here**, then enter the password.
+Right-click the `.7z` file → **7-Zip** → **Extract here**, then enter `infected` when prompted.
 
 ## Why Use File Protection?
 
