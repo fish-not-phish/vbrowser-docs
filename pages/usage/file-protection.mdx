@@ -1,23 +1,19 @@
 # File Protection
 
-File protection encrypts files downloaded inside a browser session before they can leave the container. This prevents accidentally executing malicious files and ensures downloads are handled intentionally.
+File protection encrypts files when they are downloaded from the session file browser. This prevents accidentally executing malicious files and ensures downloads are handled intentionally.
 
 ## How It Works
 
-When file protection is enabled for a session, any file downloaded inside the browser is automatically encrypted with **7-Zip AES-256 encryption** inside the container. The encrypted archive (`.7z`) is what gets transferred to the user instead of the raw file.
+When a user clicks a file in the session's file browser (`/files/`), the request is handled by an on-demand zip server running inside the container. Instead of serving the raw file, nginx routes the request to this server which packages the file into a password-protected **7-Zip AES-256 encrypted** archive on the fly and streams it directly to the browser.
 
-To access the file contents, you must decrypt it with the session-specific password using 7-Zip or a compatible tool.
+When `FILE_PROTECTION=false`, the same zip server still handles file requests but delivers the raw file as a direct download attachment — no encryption, no archive.
 
-## Limitations
-
-| Constraint | Details |
+| Mode | Behaviour |
 |---|---|
-| Maximum file size | 10 MB. Files larger than 10 MB may stall or fail during encryption due to the double-processing overhead. |
-| Kali Linux | Full OS image |
-| Ubuntu | Full OS image |
-| Terminal | Not a web browser |
-| Code-server | Not a web browser |
-| File format | All protected files are delivered as `.7z` archives regardless of original format. |
+| `FILE_PROTECTION=true` | Files delivered as password-protected `.7z` archives (`filename-PROTECTED.7z`) |
+| `FILE_PROTECTION=false` | Files delivered as direct downloads with correct MIME type |
+
+The original files inside the container are never modified or deleted in either mode.
 
 ## Enabling File Protection
 
@@ -34,7 +30,7 @@ You will need 7-Zip or a compatible tool. The decryption password is provided in
 **Linux/macOS:**
 
 ```bash
-7z x downloaded-file.7z
+7z x filename-PROTECTED.7z
 ```
 
 Enter the password when prompted.
