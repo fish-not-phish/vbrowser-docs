@@ -5,5 +5,6 @@ export default {
   "session-history": "Session History",
   "network-logging": "Network Logging",
   "file-protection": "File Protection",
+  "persistent-storage": "Persistent Storage",
   "screenshots": "Screenshots"
 }

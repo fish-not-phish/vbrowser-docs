@@ -36,8 +36,9 @@ Runs `terraform init` and `terraform apply -auto-approve` to provision:
 - IAM roles and user
 - CloudWatch log groups
 - ECS task definitions for selected browser images
+- S3 Files file system, mount target, and backing bucket (for persistent storage)
 
-After apply, Terraform appends `ECR_REGISTRY`, `SUBNET_ID`, `SECURITY_GROUP_ID`, `AWS_ACCESS_KEY_ID`, and `AWS_SECRET_ACCESS_KEY` to `docker/.env`.
+After apply, Terraform appends `ECR_REGISTRY`, `SUBNET_ID`, `SECURITY_GROUP_ID`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `S3FILES_FILE_SYSTEM_ARN`, `S3FILES_FILE_SYSTEM_ID`, and `S3FILES_BUCKET_NAME` to `docker/.env`.
 
 ### Step 4 — Build and push browser images
 

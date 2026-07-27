@@ -24,8 +24,9 @@ Click any image to open the launch panel.
 | **Fargate Spot** | Use AWS Fargate Spot capacity (cheaper, interruptible) |
 | **Network logging** | Capture all HTTP traffic for this session (if enabled for your workspace) |
 | **File protection** | Encrypt downloaded files inside the container (if enabled for your workspace) |
+| **Persistent storage** | Mount S3-backed storage at `/config/Downloads` so files persist across sessions (if enabled for your workspace) |
 
-Some images may have Spot forced on or off based on their configuration. OS-type images (e.g. Kali) may have different defaults.
+Some images may have Spot forced on or off based on their configuration. OS-type images (e.g. Kali) may have different defaults. See [Persistent Storage](/usage/persistent-storage) for details on how downloaded files are preserved.
 
 ## Session Lifecycle
 

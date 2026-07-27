@@ -1,0 +1,124 @@
+# Persistent Storage
+
+By default, everything inside an OvB session is **ephemeral** — when the session ends, the container is destroyed and all files are lost. **Persistent storage** is an optional feature that preserves downloaded files across sessions within a workspace.
+
+When enabled, files saved to `/config/Downloads` inside a session are backed by **AWS S3 Files** and remain available to every future session in the same workspace.
+
+## How It Works
+
+Persistent storage uses **AWS S3 Files** — a POSIX-compatible filesystem backed by S3. OvB provisions one shared S3 Files file system per deployment and creates one **access point** per workspace.
+
+When a session launches with persistent storage enabled:
+
+1. The backend resolves the workspace's access point
+2. A per-workspace ECS task definition is registered that mounts the access point at `/config/Downloads`
+3. The container writes files to `/config/Downloads` as if it were a normal directory
+4. S3 Files translates those writes into objects stored under `s3://<bucket>/<workspace-uuid>/`
+
+Files are **durable** — they persist in S3 after the session ends and are available to the next session in the same workspace.
+
+## Workspace Isolation
+
+Each workspace's access point is rooted at `/<workspace-uuid>/` in the shared bucket. The access point enforces this root — a container mounted via workspace A's access point **cannot** traverse above its root to see workspace B's files.
+
+| Layer | Mechanism |
+|---|---|
+| Access point root | Each access point exposes only `/<workspace-uuid>/` from the bucket |
+| Per-workspace task def | Each workspace gets a distinct task definition referencing only its own access point |
+| S3 key prefix | Files are physically stored under `s3://<bucket>/<workspace-uuid>/` |
+
+Compromise of one workspace's session does **not** expose another workspace's files.
+
+> Personal workspaces do **not** receive persistent storage. Only non-personal (team) workspaces are provisioned with an access point.
+
+## Enabling Persistent Storage
+
+Persistent storage is gated by two flags, both of which must be enabled:
+
+1. **Global** — `enable_persistent_storage` in [SiteSettings](/security#index) (admin-controlled)
+2. **Workspace** — `enable_persistent_storage` on the workspace (workspace admin-controlled)
+
+When both are enabled, users see a **Persistent storage** toggle in the launch panel. If either flag is disabled, sessions launch without the mount and files saved to `/config/Downloads` are ephemeral.
+
+### Provisioning Access Points
+
+Access points are provisioned automatically when a new team workspace is created (if S3 Files is configured). Workspaces created before persistent storage was enabled will not have an access point.
+
+To provision access points for existing workspaces:
+
+```bash
+docker compose exec ovb_backend python manage.py backfill_access_points
+```
+
+Preview without making changes:
+
+```bash
+docker compose exec ovb_backend python manage.py backfill_access_points --dry-run
+```
+
+### Verifying Existing Access Points
+
+If an access point was deleted manually in AWS, the database may still hold a stale ARN. Use `--verify` to check existing access points against AWS, clear stale ARNs, and reprovision:
+
+```bash
+docker compose exec ovb_backend python manage.py backfill_access_points --verify
+```
+
+This command is safe to run at any time — it is idempotent.
+
+## Write Behavior & S3 Visibility
+
+S3 Files maintains a metadata and cache layer in front of S3:
+
+- **Inside the container** — files appear immediately after download. `ls`, `stat`, and reads all work synchronously.
+- **In the S3 bucket directly** (`aws s3 ls`) — objects appear **asynchronously**, typically within seconds to a few minutes, as S3 Files flushes batches to S3.
+
+The two views are temporarily inconsistent. The data is durable from the moment the container acknowledges the write, but S3-object visibility lags.
+
+### On Session Close
+
+When a session stops, S3 Files flushes any pending writes to S3 during the container's graceful shutdown window. Files downloaded but not yet visible in S3 will appear shortly after the task terminates.
+
+> Do not assume a file is absent from S3 just because `aws s3 ls` did not show it during the session. Wait a few minutes after session close before checking.
+
+## Verifying Files in S3
+
+Files for a given workspace are stored under a key prefix matching the workspace UUID:
+
+```bash
+aws s3 ls s3://<S3FILES_BUCKET_NAME>/<workspace-uuid>/
+```
+
+The bucket name is written to `docker/.env` as `S3FILES_BUCKET_NAME` during Terraform provisioning.
+
+## Failure Modes
+
+If persistent storage is requested but cannot be provisioned, the session launch **fails fast** with a clear error rather than silently launching without the mount.
+
+| Cause | Resolution |
+|---|---|
+| `S3FILES_FILE_SYSTEM_ARN` not set | Run `terraform apply` and restart the backend |
+| Workspace has no access point ARN | Run `python manage.py backfill_access_points` |
+| Access point deleted in AWS | Run `python manage.py backfill_access_points --verify` |
+| Task definition registration fails | Check backend logs; verify ECS IAM permissions |
+
+:::danger
+If a session launches without persistent storage (due to misconfiguration or a disabled flag), files saved to `/config/Downloads` are **ephemeral and unrecoverable**. Always verify the mount is active if persistence is required.
+:::
+
+## Deleting Workspace Data
+
+Files stored via persistent storage remain in S3 indefinitely until manually deleted. S3 bucket versioning is enabled, so deleted files may still be recoverable via S3 versioning.
+
+To fully remove a workspace's persistent storage:
+
+1. Delete the access point in AWS:
+   ```bash
+   aws s3files delete-access-point --access-point-id <fsap-...>
+   ```
+2. Delete the S3 objects:
+   ```bash
+   aws s3 rm s3://<bucket>/<workspace-uuid>/ --recursive
+   ```
+
+> Deleting the access point does **not** delete the underlying S3 objects. Both steps are required to fully remove a workspace's data.

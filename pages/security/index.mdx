@@ -4,10 +4,12 @@
 
 Every browser session in OvB runs in a fully isolated AWS ECS Fargate container. Key isolation properties:
 
-- **No persistent storage** — the container filesystem is ephemeral. When the session ends, the container is destroyed and nothing is written back to any shared volume.
+- **No persistent storage by default** — the container filesystem is ephemeral. When the session ends, the container is destroyed and nothing is written back to any shared volume.
 - **Dedicated public IP** — each container gets its own public IP via Fargate's ENI assignment. There is no shared networking between sessions.
 - **Per-session DNS** — a unique subdomain (`browser-{hash}.yourdomain.com`) is created for each session and deleted when it ends.
 - **Session tokens** — each container receives a unique token for self-close and traffic reporting. User cookies are never passed to the container.
+
+> **Persistent storage** is an opt-in exception. When enabled, files saved to `/config/Downloads` survive across sessions within a workspace. Isolation between workspaces is enforced by per-workspace S3 Files access points — a container cannot traverse above its access point root. See [Persistent Storage](/usage/persistent-storage).
 
 ## Admin Settings (SiteSettings)
 
@@ -62,6 +64,7 @@ These are injected as ECS task-level overrides at launch time.
 |---|---|
 | Network logging | Enable/disable globally |
 | File protection | Enable/disable globally |
+| Persistent storage | Enable/disable S3-backed persistent downloads globally |
 | Fargate Spot | Allow users to opt into Spot capacity |
 
 ### OIDC / SSO
