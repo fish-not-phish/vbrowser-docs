@@ -151,6 +151,12 @@ export const pageMap = [{
       "sidebarTitle": "Network Logging"
     }
   }, {
+    name: "persistent-storage",
+    route: "/usage/persistent-storage",
+    frontMatter: {
+      "sidebarTitle": "Persistent Storage"
+    }
+  }, {
     name: "screenshots",
     route: "/usage/screenshots",
     frontMatter: {
