@@ -15,7 +15,7 @@ When a session launches with persistent storage enabled:
 3. The container writes files to `/config/Downloads` as if it were a normal directory
 4. S3 Files translates those writes into objects stored under `s3://<bucket>/<workspace-uuid>/`
 
-Files are **durable** — they persist in S3 after the session ends and are available to the next session in the same workspace.
+Files are **durable** once S3 Files has finished uploading them — they persist in S3 after the session ends and are available to the next session in the same workspace. See [Write Behavior & S3 Visibility](#write-behavior--s3-visibility) for the upload lag and the risk of closing a session too soon.
 
 ## Workspace Isolation
 
@@ -73,13 +73,21 @@ S3 Files maintains a metadata and cache layer in front of S3:
 - **Inside the container** — files appear immediately after download. `ls`, `stat`, and reads all work synchronously.
 - **In the S3 bucket directly** (`aws s3 ls`) — objects appear **asynchronously**, typically within seconds to a few minutes, as S3 Files flushes batches to S3.
 
-The two views are temporarily inconsistent. The data is durable from the moment the container acknowledges the write, but S3-object visibility lags.
+The two views are temporarily inconsistent. A file is readable from inside the container as soon as it is written, but it is only **durably persisted in S3** once Mountpoint has finished uploading it — which happens in the background, typically within seconds to a minute. If the container is destroyed before that upload completes, the file is lost (see [On Session Close](#on-session-close)).
 
 ### On Session Close
 
-When a session stops, S3 Files flushes any pending writes to S3 during the container's graceful shutdown window. Files downloaded but not yet visible in S3 will appear shortly after the task terminates.
+When a session stops, OvB issues an ECS `stop_task` and returns immediately — it does **not** wait for the container to finish, and there is **no** application-level step that flushes pending writes to S3. The only protection is ECS's default `stopTimeout` (≈30 seconds, since OvB does not configure a longer one) and whatever Mountpoint for S3 manages to upload after it receives `SIGTERM`.
 
-> Do not assume a file is absent from S3 just because `aws s3 ls` did not show it during the session. Wait a few minutes after session close before checking.
+Because S3 Files uploads **asynchronously**, a file that is visible inside `/config/Downloads` may not have been uploaded to S3 yet. If the container is destroyed before that upload completes, **the file is lost** — it never reaches S3. This is especially likely for files downloaded immediately before closing the session.
+
+:::danger
+**Files downloaded to persistent storage may be lost if the session is closed too soon.** S3 Files uploads to S3 asynchronously, and OvB does not flush pending uploads before stopping the container. The ECS `stopTimeout` is the only window for in-flight uploads to finish, and it is not guaranteed to be long enough.
+
+**After downloading a file you need to keep, wait at least one minute before closing the session.** Do not rely on persistent storage for the only copy of a file written immediately before close — and keep in mind that sessions killed by Fargate Spot interruption, OOM, or manual ECS termination get **no** flush opportunity at all, regardless of how long you wait.
+:::
+
+> Do not assume a file is present in S3 just because it was visible inside the session, or absent just because `aws s3 ls` did not show it during the session. Wait at least one minute after session close before checking.
 
 ## Verifying Files in S3
 
@@ -108,17 +116,38 @@ If a session launches without persistent storage (due to misconfiguration or a d
 
 ## Deleting Workspace Data
 
-Files stored via persistent storage remain in S3 indefinitely until manually deleted. S3 bucket versioning is enabled, so deleted files may still be recoverable via S3 versioning.
+When a workspace is deleted, OvB **automatically** deprovisions its persistent storage. No manual AWS cleanup is required.
 
-To fully remove a workspace's persistent storage:
+The cleanup runs synchronously inside a `pre_delete` signal, before the workspace's database row is removed, and does both of the following:
 
-1. Delete the access point in AWS:
-   ```bash
-   aws s3files delete-access-point --access-point-id <fsap-...>
-   ```
-2. Delete the S3 objects:
-   ```bash
-   aws s3 rm s3://<bucket>/<workspace-uuid>/ --recursive
-   ```
+1. **Deletes the S3 Files access point** — so it can no longer be mounted by future sessions.
+2. **Purges all S3 objects under the workspace's prefix** — including every object version **and** delete marker (the bucket has versioning enabled). Both the `<workspace-uuid>/` and `/<workspace-uuid>/` key layouts are purged defensively.
 
-> Deleting the access point does **not** delete the underlying S3 objects. Both steps are required to fully remove a workspace's data.
+This covers every workspace deletion path: the owner delete endpoint, the leave-as-last-member auto-delete, and Django admin deletion (single-object and bulk).
+
+:::danger
+Automatic cleanup deletes **all object versions and delete markers**, not just the current version. After a workspace is deleted, its persistent storage data is **not recoverable** via S3 versioning.
+:::
+
+### Best-Effort Semantics
+
+Cleanup is best-effort: each AWS call is attempted independently, and failures are logged but **never block** the workspace deletion. The database row is always removed. If the backend logs a deprovisioning failure (e.g. a transient AWS error or insufficient IAM permissions), orphaned S3 data or a stale access point may remain with no database record pointing to it.
+
+### Manual Recovery
+
+If automatic cleanup failed — or if you want to verify a workspace's data is fully gone — you can clean up manually. First confirm there is nothing left:
+
+```bash
+aws s3 ls s3://<S3FILES_BUCKET_NAME>/<workspace-uuid>/ --recursive
+```
+
+Then, if anything remains, remove the access point and purge the S3 prefix yourself (including historical versions, which a plain `aws s3 rm --recursive` will **not** delete):
+
+```bash
+aws s3files delete-access-point --access-point-id <fsap-...>
+aws s3api list-object-versions --bucket <S3FILES_BUCKET_NAME> --prefix "<workspace-uuid>/" \
+  --query '{Objects: Versions[].{Key:Key,VersionId:VersionId}}' \
+  | aws s3api delete-objects --bucket <S3FILES_BUCKET_NAME> --delete file:///dev/stdin
+```
+
+> Personal workspaces never receive persistent storage, so there is nothing to clean up when one is deleted. `DEV_MODE` deployments skip S3 cleanup entirely.

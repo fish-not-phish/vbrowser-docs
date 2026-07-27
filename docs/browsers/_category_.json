@@ -1,8 +1,0 @@
-{
-  "label": "Browsers",
-  "position": 4,
-  "link": {
-    "type": "generated-index",
-    "description": "Detailed information about supported browsers, customization options, and how browser containers are built and managed."
-  }
-}

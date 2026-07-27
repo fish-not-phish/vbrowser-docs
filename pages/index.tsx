@@ -73,7 +73,7 @@ const features: Feature[] = [
     icon: <GitForkIcon className='size-5' />,
     title: 'Open Source',
     description:
-      'MIT licensed with no hidden restrictions. Read the code, extend it, contribute back. No black boxes in your security stack.',
+      'Open source under a non-commercial license. Read the code, extend it, contribute back. No black boxes in your security stack.',
     tag: 'OSS',
   },
 ]
@@ -81,7 +81,7 @@ const features: Feature[] = [
 const stats = [
   { value: '15+', label: 'Browser images' },
   { value: '100%', label: 'Ephemeral sessions' },
-  { value: 'MIT', label: 'Open source license' },
+  { value: 'OSS', label: 'Non-commercial license' },
   { value: '0', label: 'Data sent externally' },
 ]
 
@@ -224,12 +224,12 @@ export default function LandingPage() {
           <title>vBrowser — Self-Hosted Browser Isolation</title>
           <meta
             name='description'
-            content='Open vBrowser (OvB) is a self-hosted browser isolation platform built for CTI investigations and security operations. Zero persistence, 15+ browser images, MIT licensed.'
+            content='Open vBrowser (OvB) is a self-hosted browser isolation platform built for CTI investigations and security operations. Zero persistence, 15+ browser images, open source under a non-commercial license.'
           />
           <meta property='og:title' content='vBrowser — Self-Hosted Browser Isolation' />
           <meta
             property='og:description'
-            content='Self-hosted browser isolation for CTI and security ops. Zero persistence, 15+ browser images, MIT licensed.'
+            content='Self-hosted browser isolation for CTI and security ops. Zero persistence, 15+ browser images, open source under a non-commercial license.'
           />
           <link rel='icon' href='/img/favicon.ico' />
           <meta name='viewport' content='width=device-width, initial-scale=1.0' />
@@ -305,7 +305,7 @@ export default function LandingPage() {
                 className='group inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/8 px-4 py-1.5 text-xs font-medium text-primary transition-colors hover:border-primary/50 hover:bg-primary/12'
               >
                 <ZapIcon className='size-3' />
-                MIT Licensed · Open Source · Self-Hosted
+                Open Source · Non-Commercial · Self-Hosted
                 <ChevronRightIcon className='size-3 transition-transform group-hover:translate-x-0.5' />
               </Link>
             </div>
@@ -586,7 +586,7 @@ cd open-vbrowser
               <div className='mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground/70'>
                 <span className='flex items-center gap-1.5'><LockIcon className='size-3' /> Zero external data</span>
                 <span className='flex items-center gap-1.5'><ServerIcon className='size-3' /> Your infrastructure</span>
-                <span className='flex items-center gap-1.5'><GitForkIcon className='size-3' /> MIT licensed</span>
+                <span className='flex items-center gap-1.5'><GitForkIcon className='size-3' /> Non-commercial license</span>
               </div>
             </div>
           </div>
@@ -617,7 +617,7 @@ cd open-vbrowser
             </nav>
 
             <p className='shrink-0 text-xs text-muted-foreground'>
-              MIT {new Date().getFullYear()} © vBrowser
+              {new Date().getFullYear()} © vBrowser
             </p>
           </div>
         </div>

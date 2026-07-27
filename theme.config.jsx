@@ -15,7 +15,7 @@ export default {
     forcedTheme: 'dark',
   },
   footer: {
-    content: `MIT ${new Date().getFullYear()} © vBrowser`,
+    content: `${new Date().getFullYear()} © vBrowser`,
   },
   head: (
     <>

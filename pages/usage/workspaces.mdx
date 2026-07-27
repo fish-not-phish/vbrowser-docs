@@ -65,3 +65,14 @@ Workspace-level settings take precedence over global defaults (SiteSettings) whe
 ## Switching Workspaces
 
 Use the workspace switcher in the sidebar to move between workspaces. Sessions and cases are scoped to the workspace they were created in.
+
+## Deleting a Workspace
+
+Only a workspace **owner** can delete a workspace. Deleting a workspace also happens automatically when the last member leaves.
+
+Deleting a workspace permanently removes:
+
+- The workspace record and all memberships
+- All sessions, cases, notes, tags, and comments belonging to the workspace
+
+If the workspace had [persistent storage](/usage/persistent-storage#deleting-workspace-data) enabled, OvB **automatically** deprovisions its S3 Files access point and purges all S3 object versions under the workspace's prefix — this happens synchronously before the database row is removed, and the data is **not** recoverable afterward. See [Deleting Workspace Data](/usage/persistent-storage#deleting-workspace-data) for the full details and best-effort semantics.
