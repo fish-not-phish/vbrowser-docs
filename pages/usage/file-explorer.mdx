@@ -1,0 +1,39 @@
+# File Explorer
+
+The file explorer is a web UI for browsing and managing files in a workspace's [persistent storage](/usage/persistent-storage) — without needing to launch a browser session or use the AWS CLI.
+
+Files managed here are the same files that appear at `/config/Downloads` inside a browser session. Anything saved from a session is visible here, and anything uploaded here is available to the next session in the same workspace.
+
+## Prerequisites
+
+Available when persistent storage is enabled for the active workspace (global + workspace flags both on). Not available for personal workspaces or in `DEV_MODE`.
+
+## Where to Find It
+
+A **Files** item appears in the workspace sidebar when persistent storage is enabled. Click it to open the explorer.
+
+## Operations
+
+| Action | Notes |
+|---|---|
+| **Browse** | Navigate folders with breadcrumbs. |
+| **Upload** | One file at a time, up to **200 MB**. |
+| **Download** | Download the raw file. |
+| **Download protected** | Wraps the file in a password-protected 7z (password `infected`). Requires [file protection](/usage/file-protection). |
+| **New folder** | Create a folder. |
+| **Delete** | Delete a file, or recursively delete a folder and all contents. |
+| **SHA-256** | Compute or copy a file's hash. |
+
+import { Callout } from 'nextra/components'
+
+<Callout type="error">
+  Folder deletes are **recursive** — deleting a folder purges everything inside it, including all historical versions. There is no undo.
+</Callout>
+
+## Relationship to Browser Sessions
+
+Files saved to `/config/Downloads` inside a session land in S3 and appear in the explorer. Files uploaded via the explorer appear at `/config/Downloads` in the next session.
+
+> S3 uploads are asynchronous — a file saved inside a session may not appear in the explorer until the upload completes. See [Persistent Storage → Closing a Session](/usage/persistent-storage#closing-a-session).
+
+All file operations require MFA-authenticated access and workspace membership. Mutating actions are recorded in the [audit log](/security/audit-log).

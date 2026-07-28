@@ -6,5 +6,6 @@ export default {
   "network-logging": "Network Logging",
   "file-protection": "File Protection",
   "persistent-storage": "Persistent Storage",
+  "file-explorer": "File Explorer",
   "screenshots": "Screenshots"
 }

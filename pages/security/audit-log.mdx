@@ -1,0 +1,37 @@
+# Audit Log
+
+OvB records an **audit log** of administrative and user actions across the platform. The log is always on, append-only, and visible to admins only.
+
+## Where to Find It
+
+Go to **Admin → Audit Log** in the sidebar. The page shows a paginated table with columns for time, actor, action (as a colored badge), target, details, and IP.
+
+## What Is Logged
+
+Each entry captures the timestamp, the acting user, the action, the target user (if any), the client IP, and relevant metadata.
+
+Actions are grouped by category:
+
+| Category | Examples |
+|---|---|
+| **User management** | User created, updated, password reset, session revoked |
+| **API keys** | Key created, key revoked |
+| **Workspaces** | Created, updated, deleted, member added/removed/role-changed, browser allowlist set |
+| **Site settings** | Global settings updated |
+| **Sessions** | Session launched, session closed |
+| **Files** | File uploaded, deleted, folder created, hash computed, protected download |
+| **Cases** | Created, updated, archived, attachment uploaded/deleted |
+
+## Filtering
+
+- **Action group** — dropdown filters by category.
+- **Free-text search** — matches action or actor email.
+- **Pagination** — 50 rows per page.
+
+## Limitations
+
+- No export (CSV/JSON).
+- No date or workspace filter.
+- No retention policy — entries accumulate indefinitely.
+- Case comments and tag creation are not audited.
+- Plain file downloads are not audited — only protected (7z) downloads are.
