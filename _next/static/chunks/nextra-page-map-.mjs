@@ -103,6 +103,12 @@ export const pageMap = [{
   children: [{
     data: security_meta
   }, {
+    name: "audit-log",
+    route: "/security/audit-log",
+    frontMatter: {
+      "sidebarTitle": "Audit Log"
+    }
+  }, {
     name: "index",
     route: "/security",
     frontMatter: {
@@ -131,6 +137,12 @@ export const pageMap = [{
     route: "/usage/cases",
     frontMatter: {
       "sidebarTitle": "Cases"
+    }
+  }, {
+    name: "file-explorer",
+    route: "/usage/file-explorer",
+    frontMatter: {
+      "sidebarTitle": "File Explorer"
     }
   }, {
     name: "file-protection",
