@@ -23,11 +23,21 @@ Whether personal or team workspaces can be created is controlled by the admin.
 
 ## Roles
 
+Workspace roles follow a strict hierarchy — each role gains everything the role below it can do.
+
 | Role | Permissions |
 |---|---|
-| `owner` | Full control: manage members, settings, and sessions |
-| `admin` | Manage members and settings; cannot transfer ownership |
-| `member` | Launch sessions, view history, manage their own cases |
+| `owner` | Full control: manage members, settings, and sessions; delete the workspace |
+| `admin` | Manage members and settings; cannot transfer ownership or delete the workspace |
+| `member` | Write to [persistent storage](/usage/persistent-storage) (upload, delete, mkdir) plus everything below |
+| `analyst` | Launch sessions, create and edit cases, manage case attachments and workspace file links plus everything below |
+| `viewer` | Read-only: browse and download files, view cases, and post comments |
+
+import { Callout } from 'nextra/components'
+
+<Callout>
+  Only <code>owner</code> and <code>admin</code> can invite members or change roles. Admins cannot invite or promote anyone to <code>owner</code>.
+</Callout>
 
 ## Creating a Workspace
 
@@ -56,6 +66,7 @@ Each workspace has independent settings that can override the global defaults:
 | Browser allowlist | Restrict which browsers/OS images members can use |
 | Idle timeout | Override the default session idle timeout |
 | Concurrent session limit | Maximum simultaneous open sessions per user |
+| Max session duration | Override the hard cap on how long a single session can run (hours) |
 | Network logging | Enable or disable traffic logging for this workspace |
 | File protection | Enable or disable encrypted file downloads for this workspace |
 | Persistent storage | Enable or disable S3-backed persistent downloads for this workspace |

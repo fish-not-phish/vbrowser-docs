@@ -54,6 +54,23 @@ The live view is capped at the most recent 200 events. For the complete record, 
 
 Each entry shows the timestamp, HTTP method, host, and full URL.
 
+## Indicators of Compromise (IOCs)
+
+For any session with network logging enabled, the session detail view includes an **IOCs** tab that aggregates every contacted host into a deduplicated list — useful for quickly extracting indicators from an investigation.
+
+Each row shows:
+
+| Column | Description |
+|---|---|
+| Host | The domain or IP address contacted |
+| Type | `Domain` or `IP` (IPv4 addresses are detected automatically) |
+| Events | How many traffic events referenced this host |
+| Flagged | How many of those events you flagged for review |
+| First seen | When the host was first contacted |
+| Last seen | When the host was last contacted |
+
+Hosts are sorted by event count, most-contacted first. Use this view to lift out the domains and IPs a site or sample reached out to during the session.
+
 ## Privacy and Data Retention
 
 Traffic logs are stored in the PostgreSQL database. They are associated with the session and accessible to workspace members with sufficient permissions. There is currently no automatic expiry — logs are retained until the session record is deleted.

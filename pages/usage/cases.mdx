@@ -10,7 +10,7 @@
   />
 </div>
 
-Cases let you organize browser sessions into structured investigations. Each case can contain linked sessions, notes, tags, comments, and file attachments.
+Cases let you organize browser sessions into structured investigations. Each case can contain linked sessions, notes, tags, comments, and files (uploaded attachments or links to workspace storage).
 
 ## Creating a Case
 
@@ -57,9 +57,34 @@ Notes are stored per-session and are accessible from the session detail view.
 
 Cases have a comment thread for team collaboration. Any workspace member can add comments.
 
-## File Attachments
+## Files on a Case
 
-Files can be attached directly to cases (not individual sessions). Attachments are limited to 50 MB per file and are stored on the server's local filesystem by default. If `AWS_STORAGE_BUCKET_NAME` is configured, attachments are stored in S3 instead.
+A case can reference files in two ways:
+
+| Source | Description |
+|---|---|
+| **Upload** | A file attached directly to the case. Limited to 50 MB per file and stored on the server's local filesystem, or in S3 if `AWS_STORAGE_BUCKET_NAME` is configured. |
+| **Workspace file** | A read-only link to a file that already lives in the workspace's [persistent storage](/usage/persistent-storage). No bytes are copied — the case only stores a pointer to the S3 path. |
+
+The **Files** tab on a case lists both kinds together, sorted newest-first.
+
+### Linking a Workspace File
+
+1. Open the case and go to the **Files** tab
+2. Click **Link file** and pick a file from the workspace's persistent storage
+3. The file appears on the case immediately
+
+Linking a file requires the `analyst` role or higher. Removing a link from a case does **not** delete the underlying S3 object — it only removes the reference. If the source object is later deleted from storage, the link remains on the case but is marked as missing.
+
+### Downloading Files
+
+Every file downloaded from a case is wrapped in a password-protected **7z** archive (`<filename>-PROTECTED.7z`, password `infected`). This applies to both uploads and workspace file links. See [File Protection](/usage/file-protection) for extraction instructions.
+
+import { Callout } from 'nextra/components'
+
+<Callout type="error">
+  Because workspace file links point at live S3 objects, downloading one fetches the current bytes from storage — not a snapshot from when the link was created.
+</Callout>
 
 ## Case Detail View
 
@@ -68,6 +93,6 @@ The case detail page shows:
 - Case metadata (name, description, status, created date)
 - All linked sessions with summary info
 - Comment thread
-- File attachments
+- Files (uploaded attachments and linked workspace files)
 
 From here you can also change the case status or edit the description.
