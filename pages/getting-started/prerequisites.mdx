@@ -69,7 +69,9 @@ The AWS region is set interactively when you run `setup.sh` — no manual config
 
 ## Cloudflare
 
-OvB uses Cloudflare to create a unique DNS A record for each browser session (`browser-{hash}.yourdomain.com` → container public IP).
+Cloudflare must be used as the DNS provider for the domain your browsers and apps run on. For each browser session, OvB creates a unique DNS A record (`browser-{hash}.yourdomain.com` → container public IP) that is proxied through Cloudflare.
+
+Cloudflare also acts as a reverse proxy and performs SSL termination in front of the browser/app containers. Selkies serves HTTPS inside the container, but with a self-signed certificate that browsers will not trust. Cloudflare presents its managed TLS certificate for your domain to the user's browser and proxies the traffic to the container — without this, the session viewer cannot connect because the browser would reject the self-signed certificate.
 
 **1. Create a Cloudflare account**
 
