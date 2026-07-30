@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 
-import { PrimaryOrionButton, SecondaryOrionButton } from '@/components/ui/orion-button'
+import { PrimaryVBrowserButton, SecondaryVBrowserButton } from '@/components/ui/vbrowser-button'
 import { Card, CardContent } from '@/components/ui/card'
 import Grill from '@/assets/svg/grill'
 
@@ -21,12 +21,12 @@ const AppIntegrationCTA = () => {
             </p>
 
             <div className='flex flex-col justify-center gap-3 sm:flex-row sm:gap-4'>
-              <PrimaryOrionButton size='lg' asChild>
+              <PrimaryVBrowserButton size='lg' asChild>
                 <Link href='/login'>Get started</Link>
-              </PrimaryOrionButton>
-              <SecondaryOrionButton size='lg' asChild>
+              </PrimaryVBrowserButton>
+              <SecondaryVBrowserButton size='lg' asChild>
                 <Link href='/#pricing'>View pricing</Link>
-              </SecondaryOrionButton>
+              </SecondaryVBrowserButton>
             </div>
             <div className='absolute top-[60%] right-[-2%] -z-1 rotate-66 max-lg:hidden'>
               <div className='absolute inset-0 shadow-[inset_0px_0px_20px_20px_var(--card)]'></div>

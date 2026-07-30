@@ -23,7 +23,7 @@ import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AnimatedTooltip } from '@/components/ui/motion-tooltip'
 import { BorderBeam } from '@/components/ui/border-beam'
-import { PrimaryOrionButton, SecondaryOrionButton } from '@/components/ui/orion-button'
+import { PrimaryVBrowserButton, SecondaryVBrowserButton } from '@/components/ui/vbrowser-button'
 
 import LeadQualifier from '@/components/blocks/hero-section/lead-qualifier'
 import MeetingPrep from '@/components/blocks/hero-section/meeting-prep'
@@ -144,18 +144,18 @@ const HeroSection = ({ stars }: { stars: number }) => {
 
             <MotionPreset fade blur delay={0.1} transition={{ duration: 0.5 }}>
               <div className='flex flex-wrap items-center justify-center gap-4'>
-                <PrimaryOrionButton size='lg' className='rounded-lg max-[425px]:has-[>svg]:px-4' asChild>
+                <PrimaryVBrowserButton size='lg' className='rounded-lg max-[425px]:has-[>svg]:px-4' asChild>
                   <Link href='https://github.com/fish-not-phish/open-vbrowser'>
                     <ArrowUpRightIcon />
                     Get Started
                   </Link>
-                </PrimaryOrionButton>
-                <SecondaryOrionButton size='lg' className='rounded-lg max-[425px]:has-[>svg]:px-4' asChild>
+                </PrimaryVBrowserButton>
+                <SecondaryVBrowserButton size='lg' className='rounded-lg max-[425px]:has-[>svg]:px-4' asChild>
                   <Link href='/introduction'>
                     <BookOpenIcon />
                     Read Docs
                   </Link>
-                </SecondaryOrionButton>
+                </SecondaryVBrowserButton>
               </div>
             </MotionPreset>
           </div>

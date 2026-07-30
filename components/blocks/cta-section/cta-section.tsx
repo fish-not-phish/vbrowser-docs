@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { PrimaryOrionButton, SecondaryOrionButton } from '@/components/ui/orion-button'
+import { PrimaryVBrowserButton, SecondaryVBrowserButton } from '@/components/ui/vbrowser-button'
 import { Card, CardContent } from '@/components/ui/card'
 import { NumberTicker } from '@/components/ui/number-ticker'
 import Grill from '@/assets/svg/grill'
@@ -33,12 +33,12 @@ const CTA = ({ stats }: CTAProps) => {
                   threat investigation, phishing analysis, and OSINT gathering. No data leaves your infrastructure.
                 </p>
                 <div className='flex flex-col gap-3 sm:flex-row sm:gap-4'>
-                  <PrimaryOrionButton size='lg' asChild>
+                  <PrimaryVBrowserButton size='lg' asChild>
                     <Link href='https://github.com/fish-not-phish/open-vbrowser'>Get started</Link>
-                  </PrimaryOrionButton>
-                  <SecondaryOrionButton size='lg' asChild>
+                  </PrimaryVBrowserButton>
+                  <SecondaryVBrowserButton size='lg' asChild>
                     <Link href='/introduction'>Read the docs</Link>
-                  </SecondaryOrionButton>
+                  </SecondaryVBrowserButton>
                 </div>
               </CardContent>
               <div className='absolute top-1/3 right-[-34%] -z-1 rotate-45 max-lg:hidden'>

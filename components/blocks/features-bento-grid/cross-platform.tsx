@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react'
 
-import LogoVector from '@/assets/svg/orion-logo'
+import LogoVector from '@/assets/svg/vbrowser-logo'
 
 const logos = [
   {

@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 import SectionHeader from '@/components/blocks/section-header'
 import { Accordion, AccordionContent, AccordionItem } from '@/components/ui/accordion'
-import { PrimaryOrionButton } from '@/components/ui/orion-button'
+import { PrimaryVBrowserButton } from '@/components/ui/vbrowser-button'
 
 import type { FAQItem } from '@/assets/data/faq'
 
@@ -34,9 +34,9 @@ const FAQSection = ({ faqs }: FAQSectionProps) => {
             </p>
 
             <div className='flex flex-wrap items-center justify-center gap-3 sm:gap-4'>
-              <PrimaryOrionButton size='lg' className='rounded-lg' asChild>
+              <PrimaryVBrowserButton size='lg' className='rounded-lg' asChild>
                 <Link href='/introduction'>Docs</Link>
-              </PrimaryOrionButton>
+              </PrimaryVBrowserButton>
             </div>
           </div>
 

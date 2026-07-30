@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { PrimaryOrionButton, SecondaryOrionButton } from '@/components/ui/orion-button'
+import { PrimaryVBrowserButton, SecondaryVBrowserButton } from '@/components/ui/vbrowser-button'
 import { cn } from '@/lib/utils'
 
 import SectionHeader from '@/components/blocks/section-header'
@@ -84,14 +84,14 @@ const IntegrationTools = () => {
                       const isActive = selectedCategory === category
 
                       return isActive ? (
-                        <PrimaryOrionButton
+                        <PrimaryVBrowserButton
                           key={category}
                           size='lg'
                           onClick={() => handleCategoryChange(category)}
                           className='justify-start'
                         >
                           {category}
-                        </PrimaryOrionButton>
+                        </PrimaryVBrowserButton>
                       ) : (
                         <Button
                           variant='ghost'
@@ -143,11 +143,11 @@ const IntegrationTools = () => {
                           {tool.description}
                         </p>
                         {/* Learn More Button */}
-                        <SecondaryOrionButton asChild>
+                        <SecondaryVBrowserButton asChild>
                           <Link href={tool.link} target='_blank' rel='noopener noreferrer'>
                             Learn more
                           </Link>
-                        </SecondaryOrionButton>
+                        </SecondaryVBrowserButton>
                       </CardContent>
                     </Card>
                   </div>

@@ -1,4 +1,4 @@
-import LogoSvg from '@/assets/svg/orion-logo'
+import LogoSvg from '@/assets/svg/vbrowser-logo'
 
 // Util Imports
 import { cn } from '@/lib/utils'

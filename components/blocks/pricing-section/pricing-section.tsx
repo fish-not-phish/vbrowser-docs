@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import SectionHeader from '@/components/blocks/section-header'
 import { Badge } from '@/components/ui/badge'
-import { PrimaryOrionButton, SecondaryOrionButton } from '@/components/ui/orion-button'
+import { PrimaryVBrowserButton, SecondaryVBrowserButton } from '@/components/ui/vbrowser-button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { NumberTicker } from '@/components/ui/number-ticker'
 
@@ -80,14 +80,14 @@ const PricingSection = ({ plans }: PricingSectionProps) => {
                       <span className='text-muted-foreground text-lg'>/{plan.period}</span>
                     </div>
                     {plan.buttonVariant === 'primary' && (
-                      <PrimaryOrionButton size='lg' className='cursor-pointer rounded-lg'>
+                      <PrimaryVBrowserButton size='lg' className='cursor-pointer rounded-lg'>
                         {plan.buttonText}
-                      </PrimaryOrionButton>
+                      </PrimaryVBrowserButton>
                     )}
                     {plan.buttonVariant === 'secondary' && (
-                      <SecondaryOrionButton size='lg' className='cursor-pointer rounded-lg'>
+                      <SecondaryVBrowserButton size='lg' className='cursor-pointer rounded-lg'>
                         {plan.buttonText}
-                      </SecondaryOrionButton>
+                      </SecondaryVBrowserButton>
                     )}
                   </CardHeader>
 

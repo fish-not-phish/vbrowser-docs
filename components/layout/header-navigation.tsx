@@ -22,7 +22,7 @@ import {
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '@/components/ui/sheet'
-import { SecondaryOrionButton } from '@/components/ui/orion-button'
+import { SecondaryVBrowserButton } from '@/components/ui/vbrowser-button'
 
 import Logo from '@/components/logo'
 
@@ -379,10 +379,10 @@ const HeaderNavigationSmallScreen = ({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <SecondaryOrionButton size='icon-lg' className={cn('inline-flex lg:hidden', triggerClassName)}>
+        <SecondaryVBrowserButton size='icon-lg' className={cn('inline-flex lg:hidden', triggerClassName)}>
           <MenuIcon />
           <span className='sr-only'>Menu</span>
-        </SecondaryOrionButton>
+        </SecondaryVBrowserButton>
       </SheetTrigger>
       <SheetContent side='left' className='w-75 gap-0 p-0'>
         <SheetHeader className='p-4'>

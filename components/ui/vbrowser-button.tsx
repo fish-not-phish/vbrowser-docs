@@ -8,14 +8,14 @@ import { Button, type buttonVariants } from '@/components/ui/button'
 
 import { cn } from '@/lib/utils'
 
-interface OrionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface VBrowserButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: VariantProps<typeof buttonVariants>['size']
   children: React.ReactNode
   className?: string
   asChild?: boolean
 }
 
-function PrimaryOrionButton({ children, size, asChild = false, className, ...props }: OrionButtonProps) {
+function PrimaryVBrowserButton({ children, size, asChild = false, className, ...props }: VBrowserButtonProps) {
   return (
     <Button
       size={size}
@@ -32,7 +32,7 @@ function PrimaryOrionButton({ children, size, asChild = false, className, ...pro
   )
 }
 
-function SecondaryOrionButton({ children, size, asChild = false, className, ...props }: OrionButtonProps) {
+function SecondaryVBrowserButton({ children, size, asChild = false, className, ...props }: VBrowserButtonProps) {
   return (
     <Button
       variant='secondary'
@@ -50,4 +50,4 @@ function SecondaryOrionButton({ children, size, asChild = false, className, ...p
   )
 }
 
-export { PrimaryOrionButton, SecondaryOrionButton, type OrionButtonProps }
+export { PrimaryVBrowserButton, SecondaryVBrowserButton, type VBrowserButtonProps }

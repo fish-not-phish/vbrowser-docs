@@ -7,7 +7,7 @@ import { LogInIcon } from 'lucide-react'
 import Link from 'next/link'
 
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { SecondaryOrionButton } from '@/components/ui/orion-button'
+import { SecondaryVBrowserButton } from '@/components/ui/vbrowser-button'
 
 import { HeaderNavigation, HeaderNavigationSmallScreen, type Navigation } from '@/components/layout/header-navigation'
 
@@ -60,18 +60,18 @@ const Header = ({ navigationData, className }: HeaderProps) => {
 
         {/* Actions */}
         <div className='flex items-center gap-3'>
-          <SecondaryOrionButton size='lg' className='max-sm:hidden' asChild>
+          <SecondaryVBrowserButton size='lg' className='max-sm:hidden' asChild>
             <Link href='https://github.com/fish-not-phish/open-vbrowser'>Star on GitHub</Link>
-          </SecondaryOrionButton>
+          </SecondaryVBrowserButton>
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <SecondaryOrionButton size='icon-lg' className='sm:hidden' asChild>
+              <SecondaryVBrowserButton size='icon-lg' className='sm:hidden' asChild>
                 <Link href='https://github.com/fish-not-phish/open-vbrowser'>
                   <LogInIcon />
                   <span className='sr-only'>GitHub</span>
                 </Link>
-              </SecondaryOrionButton>
+              </SecondaryVBrowserButton>
             </TooltipTrigger>
             <TooltipContent>GitHub</TooltipContent>
           </Tooltip>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { PrimaryOrionButton } from '@/components/ui/orion-button'
+import { PrimaryVBrowserButton } from '@/components/ui/vbrowser-button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import Grill from '@/assets/svg/grill'
@@ -42,9 +42,9 @@ const BlogCTA = () => {
                 required
                 className='h-10'
               />
-              <PrimaryOrionButton type='submit' size='lg'>
+              <PrimaryVBrowserButton type='submit' size='lg'>
                 Get updates
-              </PrimaryOrionButton>
+              </PrimaryVBrowserButton>
             </form>
             <div className='absolute top-[60%] right-[-2%] -z-1 rotate-66 max-lg:hidden'>
               <div className='absolute inset-0 shadow-[inset_0px_0px_20px_20px_var(--card)]'></div>
