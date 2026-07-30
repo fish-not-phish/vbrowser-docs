@@ -74,50 +74,26 @@
   border-color: revert-layer;
 }
 
-/* ── Landing page padding, margin & background fix ─────────────────────────── */
-/* Nextra's unlayered preflight sets padding: 0 / margin: 0 / background-image: none
- * on *, which beats Tailwind v4's @layer utilities. This restores padding, margin,
- * and background utilities (bg-size-*, bg-fixed, bg-[radial-gradient(...)], etc.)
- * on landing page elements. */
-.dark .landing-page * {
-  padding: revert-layer;
-  margin: revert-layer;
-  background-image: revert-layer;
-  background-size: revert-layer;
-  background-attachment: revert-layer;
-  background-position: revert-layer;
-  background-repeat: revert-layer;
-}
-
-/* ── Landing page color, text-decoration, font & background-color fix ────────── */
-/* Nextra's unlayered preflight resets:
- *   a { color:inherit; text-decoration:inherit }
- *   button { background-color:transparent }
- *   html { font-family:system-ui; line-height:1.5 }
- *   b,strong { font-weight:bolder }
- *   small { font-size:80% }
- * All beat Tailwind v4's @layer utilities. revert-layer restores the utility values. */
+/* ── Landing page: total Nextra preflight neutralization ────────────────────── */
+/* Nextra bundles an unlayered Tailwind v3 preflight that resets dozens of
+ * properties on bare elements (h1-h6, a, button, img, *, etc.). Being unlayered,
+ * these beat Tailwind v4's @layer utilities at EVERY breakpoint, causing broken
+ * spacing, fonts, colors, and layout on the landing page.
+ *
+ * `all: revert-layer` (unlayered, scoped to .landing-page) rolls back EVERY
+ * property to its cascade-layer value in one shot — finding Tailwind v4's
+ * @layer base + @layer utilities values while ignoring all of Nextra's unlayered
+ * resets. This replaces the previous property-by-property whack-a-mole.
+ *
+ * `all` does NOT affect custom properties (--tw-*, --font-*, etc.), so the
+ * --tw-* reverts in the .dark * block above still apply. Scoped to .landing-page
+ * so Nextra docs pages are unaffected. */
 .dark .landing-page,
-.dark .landing-page * {
-  color: revert-layer;
-  text-decoration: revert-layer;
-  font-family: revert-layer;
-  line-height: revert-layer;
-  background-color: revert-layer;
-  vertical-align: revert-layer;
-}
-
-.dark .landing-page :is(h1, h2, h3, h4, h5, h6) {
-  font-size: revert-layer;
-  font-weight: revert-layer;
-}
-
-.dark .landing-page :is(b, strong) {
-  font-weight: revert-layer;
-}
-
-.dark .landing-page small {
-  font-size: revert-layer;
+.dark .landing-page *,
+.dark .landing-page ::backdrop,
+.dark .landing-page :after,
+.dark .landing-page :before {
+  all: revert-layer;
 }
 
 :root {
