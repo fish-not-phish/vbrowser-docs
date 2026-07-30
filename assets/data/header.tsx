@@ -3,7 +3,7 @@ import {
   NetworkIcon,
   ShieldAlertIcon,
   TerminalIcon,
-  EyeIcon,
+  BugIcon,
   ServerIcon
 } from 'lucide-react'
 
@@ -26,7 +26,7 @@ export const navigationData: Navigation[] = [
           {
             title: 'Threat Investigation',
             href: '/#use-cases',
-            description: 'Detonate suspicious URLs in isolated browser sessions.',
+            description: 'Covertly investigate dark web threats over Tor.',
             icon: <ShieldAlertIcon className='size-4' />
           },
           {
@@ -36,10 +36,10 @@ export const navigationData: Navigation[] = [
             icon: <NetworkIcon className='size-4' />
           },
           {
-            title: 'OSINT Gathering',
+            title: 'Malware Detonation',
             href: '#',
-            description: 'Collect intelligence from diverse sources anonymously.',
-            icon: <EyeIcon className='size-4' />
+            description: 'Detonate samples in Kali or Ubuntu for dynamic and static analysis.',
+            icon: <BugIcon className='size-4' />
           }
         ]
       },

@@ -12,6 +12,7 @@ import { WorksFeaturesData } from '@/assets/data/works-features-section'
 import WorksFeaturesSection from '@/components/blocks/works-features-section/works-features-section'
 import { useCasesData } from '@/assets/data/use-cases'
 import UseCases from '@/components/blocks/use-cases-section/use-cases-section'
+import PersistentStorageCallout from '@/components/blocks/persistent-storage-callout/persistent-storage-callout'
 import { faqData } from '@/assets/data/faq'
 import FAQSection from '@/components/blocks/faq-section/faq-section'
 import { ctaStats } from '@/assets/data/cta'
@@ -75,6 +76,7 @@ const LandingPage = ({ stars }: { stars: number }) => {
           <HeroSection stars={stars} />
           <Features />
           <WorksFeaturesSection data={WorksFeaturesData} />
+          <PersistentStorageCallout />
           <UseCases tabs={useCasesData} />
           <FAQSection faqs={faqData} />
           <CTA stats={ctaStats} />

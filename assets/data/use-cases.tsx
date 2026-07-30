@@ -1,4 +1,4 @@
-import { ShieldAlertIcon, RadarIcon, EyeIcon } from 'lucide-react'
+import { ShieldAlertIcon, RadarIcon, BugIcon } from 'lucide-react'
 
 export const useCasesData = [
   {
@@ -6,19 +6,19 @@ export const useCasesData = [
     value: 'cti',
     image: '/images/use-cases/01.webp',
     icon: <ShieldAlertIcon />,
-    title: 'CTI teams use vBrowser to investigate threats in isolated environments',
+    title: 'CTI teams use vBrowser to covertly investigate threats on the dark web',
     description:
-      'Cyber threat intelligence teams launch ephemeral browser sessions to visit suspicious URLs, detonate exploits, and capture indicators of compromise — all without risking their endpoints. Full traffic logs and screenshots are automatically attached to cases for downstream analysis.',
+      'Cyber threat intelligence teams use Tor sessions to covertly access dark web forums, marketplaces, and threat actor infrastructure without exposing their identity or corporate IP. No bookmarks or cookies are saved — every session is ephemeral and destroyed on close. Analysts can install any additional tooling they need, while traffic logs and screenshots are captured automatically for downstream analysis.',
     link: '#',
     testimonials: [
       {
         id: '1',
-        review: 'vBrowser lets us detonate payloads safely. The traffic logs are invaluable for IOC extraction.'
+        review: 'The Tor image lets our team monitor dark web forums covertly — no burned IPs, no leftover cookies.'
       },
-      { id: '2', review: 'We\'ve replaced our fragile VM-based analysis pipeline with vBrowser sessions.' },
+      { id: '2', review: 'Knowing nothing persists after close makes dark web recon genuinely safe for our analysts.' },
       {
         id: '3',
-        review: 'Capturing screenshots in isolated sessions saves our analysts hours per investigation.'
+        review: 'We install our own analysis tooling on the fly and the traffic logs go straight into our cases.'
       }
     ]
   },
@@ -44,26 +44,26 @@ export const useCasesData = [
     ]
   },
   {
-    name: 'OSINT Investigators',
-    value: 'osint',
+    name: 'Malware Detonation',
+    value: 'malware',
     image: '/images/use-cases/03.webp',
-    icon: <EyeIcon />,
-    title: 'OSINT investigators use vBrowser to collect intelligence anonymously',
+    icon: <BugIcon />,
+    title: 'Analysts detonate malware in Kali or Ubuntu for dynamic and static analysis',
     description:
-      'Open-source intelligence teams use Tor and Brave sessions to gather information without exposing their identity or infrastructure. Persistent sessions preserve bookmarks and cookies across investigations, while screenshots and traffic logs provide a verifiable evidence chain.',
+      'Spin up an isolated Kali Linux or Ubuntu desktop to safely detonate suspicious samples. Observe behavior in real time, capture network callbacks, and perform dynamic and static analysis in a disposable container. Analysts can download and install any additional tooling required — debuggers, disassemblers, sandbox agents — without touching corporate endpoints. The container is destroyed when the session ends.',
     link: '#',
     testimonials: [
       {
         id: '1',
-        review: 'The Tor browser image lets us investigate without burning our own IP addresses.'
+        review: 'Detonating samples in a disposable Kali container replaced our entire on-prem sandbox.'
       },
       {
         id: '2',
-        review: 'Persistent workspaces keep our investigation context organized across sessions.'
+        review: 'I install whatever reversing tools I need per session and never worry about contaminating my host.'
       },
       {
         id: '3',
-        review: 'Automatic screenshot capture creates a defensible evidence trail for our reports.'
+        review: 'Dynamic and static analysis side-by-side in one isolated environment — game changer.'
       }
     ]
   }
