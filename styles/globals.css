@@ -89,6 +89,18 @@
   background-repeat: revert-layer;
 }
 
+/* ── Landing page heading size & weight fix ─────────────────────────────────── */
+/* Nextra's unlayered preflight resets h1-h6 to font-size:inherit / font-weight:inherit,
+ * which beats Tailwind v4's @layer utilities at every breakpoint. revert-layer
+ * (unlayered, scoped to .dark .landing-page) finds Tailwind v4's utility-layer values
+ * while ignoring Nextra's unlayered reset, restoring the correct size and weight at
+ * all viewports — including md: and lg:text-5xl, which the old !important passthrough
+ * never covered. Scoped to .landing-page so Nextra docs headings are unaffected. */
+.dark .landing-page :is(h1, h2, h3, h4, h5, h6) {
+  font-size: revert-layer;
+  font-weight: revert-layer;
+}
+
 :root {
   /* Nextra primary color system (HSL components, space-separated) */
   --nextra-primary-hue:        349;
@@ -201,33 +213,6 @@ a:not([class]):hover {
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(207, 114, 135, 0.3) transparent;
-}
-
-/* ── Tailwind font-size utility passthrough ──────────────────────────────────── */
-/* Nextra bundles an unlayered Tailwind v3 preflight that resets h1-h6 to
-   font-size:inherit, which beats Tailwind v4's @layer utilities. These
-   unlayered rules restore the correct sizes so the landing page headings render. */
-.text-xs  { font-size: .75rem !important; }
-.text-sm  { font-size: .875rem !important; }
-.text-base{ font-size: 1rem !important; }
-.text-lg  { font-size: 1.125rem !important; }
-.text-xl  { font-size: 1.25rem !important; }
-.text-2xl { font-size: 1.5rem !important; }
-.text-3xl { font-size: 1.875rem !important; }
-.text-4xl { font-size: 2.25rem !important; }
-.text-5xl { font-size: 3rem !important; }
-.text-6xl { font-size: 3.75rem !important; }
-@media (min-width: 640px) {
-  .sm\:text-lg  { font-size: 1.125rem !important; }
-  .sm\:text-xl  { font-size: 1.25rem !important; }
-  .sm\:text-2xl { font-size: 1.5rem !important; }
-  .sm\:text-3xl { font-size: 1.875rem !important; }
-  .sm\:text-4xl { font-size: 2.25rem !important; }
-  .sm\:text-5xl { font-size: 3rem !important; }
-}
-@media (min-width: 1024px) {
-  .lg\:text-4xl { font-size: 2.25rem !important; }
-  .lg\:text-\[3\.75rem\] { font-size: 3.75rem !important; }
 }
 
 /* ── Text selection ──────────────────────────────────────────────────────────── */
