@@ -4,6 +4,7 @@ const withNextra = nextra({
   theme: 'nextra-theme-docs',
   themeConfig: './theme.config.jsx',
   defaultShowCopyCode: true,
+  autoImportThemeStyle: false,
 })
 
 export default withNextra({

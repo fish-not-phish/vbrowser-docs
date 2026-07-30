@@ -4,223 +4,146 @@
 /* Surface:      #12121e  → used for sidebar / nav blur                        */
 /* Surface-2:    #1a1a2e  → code blocks, hover states                          */
 
- /*
- * Nextra bundles an unlayered Tailwind v3 preflight that resets --tw-* custom
- * properties and border on *, which beats Tailwind v4's @layer utilities.
- * This breaks transform/shadow/ring/gradient/filter AND border/divide utilities
- * on the landing page.
+/* Nextra's style.css is compiled Tailwind v3 (preflight + utilities) with no
+ * native cascade layers. We isolate it in TWO layers below Tailwind v4:
  *
- * revert-layer (unlayered, scoped to .dark which is on <html>) looks at the
- * cascade LAYERS — finding Tailwind v4's utility values — while ignoring
- * Nextra's unlayered * reset. Specificity (.dark * = 0,1,0) beats Nextra's
- * * (0,0,0) so our revert-layer declaration wins.
- */
-.dark *,
-.dark ::backdrop,
-.dark :after,
-.dark :before {
-  --tw-translate-x: revert-layer;
-  --tw-translate-y: revert-layer;
-  --tw-rotate: revert-layer;
-  --tw-scale-x: revert-layer;
-  --tw-scale-y: revert-layer;
-  --tw-skew-x: revert-layer;
-  --tw-skew-y: revert-layer;
-  --tw-shadow: revert-layer;
-  --tw-shadow-colored: revert-layer;
-  --tw-ring-shadow: revert-layer;
-  --tw-ring-color: revert-layer;
-  --tw-ring-offset-shadow: revert-layer;
-  --tw-ring-offset-width: revert-layer;
-  --tw-ring-offset-color: revert-layer;
-  --tw-ring-inset: revert-layer;
-  --tw-blur: revert-layer;
-  --tw-brightness: revert-layer;
-  --tw-contrast: revert-layer;
-  --tw-grayscale: revert-layer;
-  --tw-hue-rotate: revert-layer;
-  --tw-invert: revert-layer;
-  --tw-saturate: revert-layer;
-  --tw-sepia: revert-layer;
-  --tw-drop-shadow: revert-layer;
-  --tw-backdrop-blur: revert-layer;
-  --tw-backdrop-brightness: revert-layer;
-  --tw-backdrop-contrast: revert-layer;
-  --tw-backdrop-grayscale: revert-layer;
-  --tw-backdrop-hue-rotate: revert-layer;
-  --tw-backdrop-invert: revert-layer;
-  --tw-backdrop-opacity: revert-layer;
-  --tw-backdrop-saturate: revert-layer;
-  --tw-backdrop-sepia: revert-layer;
-  --tw-gradient-from: revert-layer;
-  --tw-gradient-via: revert-layer;
-  --tw-gradient-to: revert-layer;
-  --tw-gradient-stops: revert-layer;
-  --tw-gradient-via-stops: revert-layer;
-  --tw-gradient-from-position: revert-layer;
-  --tw-gradient-via-position: revert-layer;
-  --tw-gradient-to-position: revert-layer;
-  --tw-border-spacing-x: revert-layer;
-  --tw-border-spacing-y: revert-layer;
-  --tw-background-image: revert-layer;
-  --tw-background-size: revert-layer;
-  --tw-background-clip: revert-layer;
-  --tw-background-position: revert-layer;
-  --tw-background-attachment: revert-layer;
-  --tw-background-origin: revert-layer;
-  --tw-background-repeat: revert-layer;
-  border-width: revert-layer;
-  border-style: revert-layer;
-  border-color: revert-layer;
-}
-
-/* ── Landing page: total Nextra preflight neutralization ────────────────────── */
-/* Nextra bundles an unlayered Tailwind v3 preflight that resets dozens of
- * properties on bare elements (h1-h6, a, button, img, *, etc.). Being unlayered,
- * these beat Tailwind v4's @layer utilities at EVERY breakpoint, causing broken
- * spacing, fonts, colors, and layout on the landing page.
+ *   @layer nextra         — Nextra's own CSS (preflight + utilities)
+ *   @layer nextra-custom  — our vBrowser brand overrides for Nextra docs pages
  *
- * `all: revert-layer` (unlayered, scoped to .landing-page) rolls back EVERY
- * property to its cascade-layer value in one shot — finding Tailwind v4's
- * @layer base + @layer utilities values while ignoring all of Nextra's unlayered
- * resets. This replaces the previous property-by-property whack-a-mole.
+ * Both layers are declared BEFORE Tailwind v4's theme/base/components/utilities,
+ * so Tailwind v4 always wins on the landing page. Within the nextra layers,
+ * nextra-custom beats nextra by layer priority — no !important needed.
  *
- * `all` does NOT affect custom properties (--tw-*, --font-*, etc.), so the
- * --tw-* reverts in the .dark * block above still apply. Scoped to .landing-page
- * so Nextra docs pages are unaffected. */
-.dark .landing-page,
-.dark .landing-page *,
-.dark .landing-page ::backdrop,
-.dark .landing-page :after,
-.dark .landing-page :before {
-  all: revert-layer;
-}
+ * autoImportThemeStyle:false in next.config.mjs prevents the unlayered JS import
+ * that the Nextra loader would otherwise inject into _app.jsx. */
+@layer nextra, nextra-custom;
+@import 'nextra-theme-docs/style.css' layer(nextra);
 
-:root {
-  /* Nextra primary color system (HSL components, space-separated) */
-  --nextra-primary-hue:        349;
-  --nextra-primary-saturation: 47%;
-  --nextra-primary-lightness:  63%;
+@layer nextra-custom {
+  :root {
+    /* Nextra primary color system (HSL components, space-separated) */
+    --nextra-primary-hue:        349;
+    --nextra-primary-saturation: 47%;
+    --nextra-primary-lightness:  63%;
 
-  /* Nextra background — used as rgb(var(--nextra-bg)) throughout the theme */
-  --nextra-bg: 13, 13, 20;
-}
+    /* Nextra background — used as rgb(var(--nextra-bg)) throughout the theme */
+    --nextra-bg: 13, 13, 20;
+  }
 
-/* Force dark mode at the HTML level so Nextra dark-mode classes always apply */
-html {
-  color-scheme: dark;
-}
+  /* Force dark mode at the HTML level so Nextra dark-mode classes always apply */
+  html {
+    color-scheme: dark;
+  }
 
-/* ── Page background & text ─────────────────────────────────────────────────── */
-body,
-.nextra-nav-container-blur,
-.nextra-sidebar-footer {
-  background-color: #0d0d14 !important;
-}
+  /* ── Page background & text ─────────────────────────────────────────────────── */
+  body,
+  .nextra-nav-container-blur,
+  .nextra-sidebar-footer {
+    background-color: #0d0d14;
+  }
 
-/* Main content area */
-.nextra-content {
-  color: #d4b8bf !important;   /* slightly softened pink-white for body text */
-}
+  /* Main content area */
+  .nextra-content {
+    color: #d4b8bf;   /* slightly softened pink-white for body text */
+  }
 
-/* ── Navbar ─────────────────────────────────────────────────────────────────── */
-.nextra-nav-container-blur {
-  background-color: rgba(13, 13, 20, 0.85) !important;
-  border-bottom: 1px solid rgba(207, 114, 135, 0.15) !important;
-  box-shadow: none !important;
-}
+  /* ── Navbar ─────────────────────────────────────────────────────────────────── */
+  .nextra-nav-container-blur {
+    background-color: rgba(13, 13, 20, 0.85);
+    border-bottom: 1px solid rgba(207, 114, 135, 0.15);
+    box-shadow: none;
+  }
 
-/* ── Sidebar ─────────────────────────────────────────────────────────────────── */
-.nextra-sidebar-container,
-aside.nextra-sidebar-container {
-  background-color: #0d0d14 !important;
-  border-right: 1px solid rgba(207, 114, 135, 0.12) !important;
-}
+  /* ── Sidebar ─────────────────────────────────────────────────────────────────── */
+  .nextra-sidebar-container,
+  aside.nextra-sidebar-container {
+    background-color: #0d0d14;
+    border-right: 1px solid rgba(207, 114, 135, 0.12);
+  }
 
-/* Sidebar footer */
-.nextra-sidebar-footer {
-  border-top: 1px solid rgba(207, 114, 135, 0.12) !important;
-  box-shadow: 0 -12px 16px rgb(13, 13, 20) !important;
-}
+  /* Sidebar footer */
+  .nextra-sidebar-footer {
+    border-top: 1px solid rgba(207, 114, 135, 0.12);
+    box-shadow: 0 -12px 16px rgb(13, 13, 20);
+  }
 
-/* ── Tables ──────────────────────────────────────────────────────────────────── */
-table {
-  border-color: rgba(207, 114, 135, 0.2) !important;
-}
-thead tr {
-  border-bottom-color: rgba(207, 114, 135, 0.2) !important;
-}
-tbody tr {
-  border-bottom-color: rgba(207, 114, 135, 0.1) !important;
-}
-thead th {
-  color: #CF7287 !important;
-  background-color: rgba(207, 114, 135, 0.06) !important;
-}
+  /* ── Tables ──────────────────────────────────────────────────────────────────── */
+  .nextra-content table {
+    border-color: rgba(207, 114, 135, 0.2);
+  }
+  .nextra-content thead tr {
+    border-bottom-color: rgba(207, 114, 135, 0.2);
+  }
+  .nextra-content tbody tr {
+    border-bottom-color: rgba(207, 114, 135, 0.1);
+  }
+  .nextra-content thead th {
+    color: #CF7287;
+    background-color: rgba(207, 114, 135, 0.06);
+  }
 
-/* ── Code blocks ─────────────────────────────────────────────────────────────── */
-pre {
-  background-color: #12121e !important;
-  border: 1px solid rgba(207, 114, 135, 0.15) !important;
-  border-radius: 6px !important;
-}
+  /* ── Code blocks ─────────────────────────────────────────────────────────────── */
+  .nextra-content pre {
+    background-color: #12121e;
+    border: 1px solid rgba(207, 114, 135, 0.15);
+    border-radius: 6px;
+  }
 
-/* Inline code */
-:not(pre) > code {
-  background-color: rgba(207, 114, 135, 0.12) !important;
-  border-color: rgba(207, 114, 135, 0.2) !important;
-  color: #CF7287 !important;
-}
+  /* Inline code */
+  .nextra-content :not(pre) > code {
+    background-color: rgba(207, 114, 135, 0.12);
+    border-color: rgba(207, 114, 135, 0.2);
+    color: #CF7287;
+  }
 
-/* ── Headings (docs only) ────────────────────────────────────────────────────── */
-.nextra-content h1, .nextra-content h2, .nextra-content h3, .nextra-content h4 {
-  color: #e8b4bf !important;
-}
+  /* ── Headings (docs only) ────────────────────────────────────────────────────── */
+  .nextra-content h1, .nextra-content h2, .nextra-content h3, .nextra-content h4 {
+    color: #e8b4bf;
+  }
 
-.nextra-content h2 {
-  border-bottom: 1px solid rgba(207, 114, 135, 0.2) !important;
-  padding-bottom: 0.4rem;
-}
+  .nextra-content h2 {
+    border-bottom: 1px solid rgba(207, 114, 135, 0.2);
+    padding-bottom: 0.4rem;
+  }
 
-/* ── Links ───────────────────────────────────────────────────────────────────── */
-a:not([class]) {
-  color: #CF7287;
-  text-decoration-color: rgba(207, 114, 135, 0.4);
-}
-a:not([class]):hover {
-  color: #e8a0af;
-  text-decoration-color: rgba(207, 114, 135, 0.8);
-}
+  /* ── Links (docs only) ───────────────────────────────────────────────────────── */
+  .nextra-content a:not([class]) {
+    color: #CF7287;
+    text-decoration-color: rgba(207, 114, 135, 0.4);
+  }
+  .nextra-content a:not([class]):hover {
+    color: #e8a0af;
+    text-decoration-color: rgba(207, 114, 135, 0.8);
+  }
 
-/* ── Scrollbar ───────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: rgba(207, 114, 135, 0.3);
-  border-radius: 999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(207, 114, 135, 0.6);
-}
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(207, 114, 135, 0.3) transparent;
-}
+  /* ── Scrollbar ───────────────────────────────────────────────────────────────── */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(207, 114, 135, 0.3);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(207, 114, 135, 0.6);
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(207, 114, 135, 0.3) transparent;
+  }
 
-/* ── Text selection ──────────────────────────────────────────────────────────── */
-::selection {
-  background: rgba(207, 114, 135, 0.3);
-  color: inherit;
+  /* ── Text selection ──────────────────────────────────────────────────────────── */
+  ::selection {
+    background: rgba(207, 114, 135, 0.3);
+    color: inherit;
+  }
+
+  /* ── TOC (right panel) ───────────────────────────────────────────────────────── */
+  .nextra-toc-footer {
+    border-top: 1px solid rgba(207, 114, 135, 0.12);
+    box-shadow: 0 -12px 16px rgb(13, 13, 20);
+    background-color: #0d0d14;
+  }
 }
-
-/* ── TOC (right panel) ───────────────────────────────────────────────────────── */
-.nextra-toc-footer {
-  border-top: 1px solid rgba(207, 114, 135, 0.12) !important;
-  box-shadow: 0 -12px 16px rgb(13, 13, 20) !important;
-  background-color: #0d0d14 !important;
-}
-
-

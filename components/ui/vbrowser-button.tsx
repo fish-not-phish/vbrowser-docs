@@ -15,39 +15,45 @@ interface VBrowserButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
   asChild?: boolean
 }
 
-function PrimaryVBrowserButton({ children, size, asChild = false, className, ...props }: VBrowserButtonProps) {
-  return (
-    <Button
-      size={size}
-      asChild={asChild}
-      className={cn(
-        'hover:bg-primary border-0 shadow-[inset_0_2px_3px_0_var(--primary),inset_2px_-4px_4px_0_rgba(0,0,0,0.25),inset_-2px_4px_4px_0_rgba(255,255,255,0.35)] transition-shadow duration-300 hover:shadow-[inset_0_0_0_0_var(--primary),inset_1px_-1.5px_2px_0_rgba(0,0,0,0.25),inset_-1px_1.5px_2px_0_rgba(255,255,255,0.35)]',
-        size === 'lg' && 'text-base has-[>svg]:px-6',
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </Button>
-  )
-}
+const PrimaryVBrowserButton = React.forwardRef<HTMLButtonElement, VBrowserButtonProps>(
+  function PrimaryVBrowserButton({ children, size, asChild = false, className, ...props }, ref) {
+    return (
+      <Button
+        ref={ref}
+        size={size}
+        asChild={asChild}
+        className={cn(
+          'hover:bg-primary border-0 shadow-[inset_0_2px_3px_0_var(--primary),inset_2px_-4px_4px_0_rgba(0,0,0,0.25),inset_-2px_4px_4px_0_rgba(255,255,255,0.35)] transition-shadow duration-300 hover:shadow-[inset_0_0_0_0_var(--primary),inset_1px_-1.5px_2px_0_rgba(0,0,0,0.25),inset_-1px_1.5px_2px_0_rgba(255,255,255,0.35)]',
+          size === 'lg' && 'text-base has-[>svg]:px-6',
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </Button>
+    )
+  }
+)
 
-function SecondaryVBrowserButton({ children, size, asChild = false, className, ...props }: VBrowserButtonProps) {
-  return (
-    <Button
-      variant='secondary'
-      size={size}
-      asChild={asChild}
-      className={cn(
-        'hover:bg-secondary bg-secondary text-secondary-foreground border-0 shadow-[inset_0_2px_3px_0_var(--secondary),inset_2px_-4px_4px_0_rgba(0,0,0,0.25),inset_-2px_4px_4px_0_rgba(255,255,255,0.35)] transition-shadow duration-300 hover:shadow-[inset_0_0_0_0_var(--secondary),inset_1px_-1.5px_2px_0_rgba(0,0,0,0.25),inset_-1px_1.5px_2px_0_rgba(255,255,255,0.35)]',
-        size === 'lg' && 'text-base has-[>svg]:px-6',
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </Button>
-  )
-}
+const SecondaryVBrowserButton = React.forwardRef<HTMLButtonElement, VBrowserButtonProps>(
+  function SecondaryVBrowserButton({ children, size, asChild = false, className, ...props }, ref) {
+    return (
+      <Button
+        ref={ref}
+        variant='secondary'
+        size={size}
+        asChild={asChild}
+        className={cn(
+          'hover:bg-secondary bg-secondary text-secondary-foreground border-0 shadow-[inset_0_2px_3px_0_var(--secondary),inset_2px_-4px_4px_0_rgba(0,0,0,0.25),inset_-2px_4px_4px_0_rgba(255,255,255,0.35)] transition-shadow duration-300 hover:shadow-[inset_0_0_0_0_var(--secondary),inset_1px_-1.5px_2px_0_rgba(0,0,0,0.25),inset_-1px_1.5px_2px_0_rgba(255,255,255,0.35)]',
+          size === 'lg' && 'text-base has-[>svg]:px-6',
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </Button>
+    )
+  }
+)
 
 export { PrimaryVBrowserButton, SecondaryVBrowserButton, type VBrowserButtonProps }

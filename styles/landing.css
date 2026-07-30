@@ -191,7 +191,7 @@
     @apply border-border outline-ring/50;
   }
 
-  .dark {
+  body {
     @apply bg-background text-foreground;
     letter-spacing: var(--tracking-normal);
   }
@@ -228,4 +228,11 @@ a.link-animated:before {
 a.link-animated:hover::before {
   transform: scaleX(1);
   transform-origin: left;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-sans);
 }
