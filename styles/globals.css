@@ -89,16 +89,35 @@
   background-repeat: revert-layer;
 }
 
-/* ── Landing page heading size & weight fix ─────────────────────────────────── */
-/* Nextra's unlayered preflight resets h1-h6 to font-size:inherit / font-weight:inherit,
- * which beats Tailwind v4's @layer utilities at every breakpoint. revert-layer
- * (unlayered, scoped to .dark .landing-page) finds Tailwind v4's utility-layer values
- * while ignoring Nextra's unlayered reset, restoring the correct size and weight at
- * all viewports — including md: and lg:text-5xl, which the old !important passthrough
- * never covered. Scoped to .landing-page so Nextra docs headings are unaffected. */
+/* ── Landing page color, text-decoration, font & background-color fix ────────── */
+/* Nextra's unlayered preflight resets:
+ *   a { color:inherit; text-decoration:inherit }
+ *   button { background-color:transparent }
+ *   html { font-family:system-ui; line-height:1.5 }
+ *   b,strong { font-weight:bolder }
+ *   small { font-size:80% }
+ * All beat Tailwind v4's @layer utilities. revert-layer restores the utility values. */
+.dark .landing-page,
+.dark .landing-page * {
+  color: revert-layer;
+  text-decoration: revert-layer;
+  font-family: revert-layer;
+  line-height: revert-layer;
+  background-color: revert-layer;
+  vertical-align: revert-layer;
+}
+
 .dark .landing-page :is(h1, h2, h3, h4, h5, h6) {
   font-size: revert-layer;
   font-weight: revert-layer;
+}
+
+.dark .landing-page :is(b, strong) {
+  font-weight: revert-layer;
+}
+
+.dark .landing-page small {
+  font-size: revert-layer;
 }
 
 :root {

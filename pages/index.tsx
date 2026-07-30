@@ -57,7 +57,7 @@ const LandingPage = ({ stars }: { stars: number }) => {
 
   return (
     <div
-      className={`${nunito.variable} ${firaCode.variable} ${lora.variable} dark landing-page flex min-h-screen w-full flex-col scroll-smooth bg-background text-foreground`}
+      className={`${nunito.variable} ${firaCode.variable} ${lora.variable} dark landing-page flex min-h-screen w-full flex-col scroll-smooth bg-background font-sans text-foreground`}
     >
       <TooltipProvider>
         <Header navigationData={navigationData} />
