@@ -4,6 +4,91 @@
 /* Surface:      #12121e  → used for sidebar / nav blur                        */
 /* Surface-2:    #1a1a2e  → code blocks, hover states                          */
 
+ /*
+ * Nextra bundles an unlayered Tailwind v3 preflight that resets --tw-* custom
+ * properties and border on *, which beats Tailwind v4's @layer utilities.
+ * This breaks transform/shadow/ring/gradient/filter AND border/divide utilities
+ * on the landing page.
+ *
+ * revert-layer (unlayered, scoped to .dark which is on <html>) looks at the
+ * cascade LAYERS — finding Tailwind v4's utility values — while ignoring
+ * Nextra's unlayered * reset. Specificity (.dark * = 0,1,0) beats Nextra's
+ * * (0,0,0) so our revert-layer declaration wins.
+ */
+.dark *,
+.dark ::backdrop,
+.dark :after,
+.dark :before {
+  --tw-translate-x: revert-layer;
+  --tw-translate-y: revert-layer;
+  --tw-rotate: revert-layer;
+  --tw-scale-x: revert-layer;
+  --tw-scale-y: revert-layer;
+  --tw-skew-x: revert-layer;
+  --tw-skew-y: revert-layer;
+  --tw-shadow: revert-layer;
+  --tw-shadow-colored: revert-layer;
+  --tw-ring-shadow: revert-layer;
+  --tw-ring-color: revert-layer;
+  --tw-ring-offset-shadow: revert-layer;
+  --tw-ring-offset-width: revert-layer;
+  --tw-ring-offset-color: revert-layer;
+  --tw-ring-inset: revert-layer;
+  --tw-blur: revert-layer;
+  --tw-brightness: revert-layer;
+  --tw-contrast: revert-layer;
+  --tw-grayscale: revert-layer;
+  --tw-hue-rotate: revert-layer;
+  --tw-invert: revert-layer;
+  --tw-saturate: revert-layer;
+  --tw-sepia: revert-layer;
+  --tw-drop-shadow: revert-layer;
+  --tw-backdrop-blur: revert-layer;
+  --tw-backdrop-brightness: revert-layer;
+  --tw-backdrop-contrast: revert-layer;
+  --tw-backdrop-grayscale: revert-layer;
+  --tw-backdrop-hue-rotate: revert-layer;
+  --tw-backdrop-invert: revert-layer;
+  --tw-backdrop-opacity: revert-layer;
+  --tw-backdrop-saturate: revert-layer;
+  --tw-backdrop-sepia: revert-layer;
+  --tw-gradient-from: revert-layer;
+  --tw-gradient-via: revert-layer;
+  --tw-gradient-to: revert-layer;
+  --tw-gradient-stops: revert-layer;
+  --tw-gradient-via-stops: revert-layer;
+  --tw-gradient-from-position: revert-layer;
+  --tw-gradient-via-position: revert-layer;
+  --tw-gradient-to-position: revert-layer;
+  --tw-border-spacing-x: revert-layer;
+  --tw-border-spacing-y: revert-layer;
+  --tw-background-image: revert-layer;
+  --tw-background-size: revert-layer;
+  --tw-background-clip: revert-layer;
+  --tw-background-position: revert-layer;
+  --tw-background-attachment: revert-layer;
+  --tw-background-origin: revert-layer;
+  --tw-background-repeat: revert-layer;
+  border-width: revert-layer;
+  border-style: revert-layer;
+  border-color: revert-layer;
+}
+
+/* ── Landing page padding, margin & background fix ─────────────────────────── */
+/* Nextra's unlayered preflight sets padding: 0 / margin: 0 / background-image: none
+ * on *, which beats Tailwind v4's @layer utilities. This restores padding, margin,
+ * and background utilities (bg-size-*, bg-fixed, bg-[radial-gradient(...)], etc.)
+ * on landing page elements. */
+.dark .landing-page * {
+  padding: revert-layer;
+  margin: revert-layer;
+  background-image: revert-layer;
+  background-size: revert-layer;
+  background-attachment: revert-layer;
+  background-position: revert-layer;
+  background-repeat: revert-layer;
+}
+
 :root {
   /* Nextra primary color system (HSL components, space-separated) */
   --nextra-primary-hue:        349;
