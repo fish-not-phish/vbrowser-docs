@@ -1,4 +1,5 @@
 import { useEffect, type ReactElement } from 'react'
+import Head from 'next/head'
 
 import { Nunito, Fira_Code, Lora } from 'next/font/google'
 
@@ -56,7 +57,15 @@ const LandingPage = ({ stars }: { stars: number }) => {
   }, [])
 
   return (
-    <div
+    <>
+      <Head>
+        <title>vBrowser — Self-Hosted Browser Isolation Platform</title>
+        <meta
+          name='description'
+          content='Self-hosted browser isolation platform for threat investigation, SOC analysis, and OSINT gathering. Ephemeral browser sessions on AWS ECS Fargate with full traffic logging and file protection.'
+        />
+      </Head>
+      <div
       className={`${nunito.variable} ${firaCode.variable} ${lora.variable} dark landing-page flex min-h-screen w-full flex-col scroll-smooth bg-background font-sans text-foreground`}
     >
       <TooltipProvider>
@@ -80,6 +89,7 @@ const LandingPage = ({ stars }: { stars: number }) => {
         }}
       />
     </div>
+    </>
   )
 }
 

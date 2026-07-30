@@ -1,5 +1,18 @@
+/* Cascade layer order (lowest → highest priority):
+ *   properties, theme  — Tailwind v4 @property registrations + theme vars
+ *   base               — Tailwind v4 preflight
+ *   nextra             — Nextra's CSS (Tailwind v3 preflight + utilities)
+ *   nextra-custom      — our vBrowser brand overrides for Nextra docs pages
+ *   components         — Tailwind v4 component classes
+ *   utilities          — Tailwind v4 utilities (always win)
+ *
+ * Nextra sits ABOVE base so its preflight + utilities beat Tailwind v4's
+ * aggressive * { margin:0; padding:0 } on docs pages. Tailwind v4 utilities
+ * (highest layer) still override Nextra on the landing page. */
+@layer properties, theme, base, nextra, nextra-custom, components, utilities;
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import 'nextra-theme-docs/style.css' layer(nextra);
 
 @custom-variant dark (&:is(.dark *));
 
@@ -235,4 +248,138 @@ kbd,
 samp,
 pre {
   font-family: var(--font-sans);
+}
+
+/* ── Nextra docs page overrides ────────────────────────────────────────────── */
+/* autoImportThemeStyle:false in next.config.mjs prevents the unlayered JS import
+ * that the Nextra loader would otherwise inject into _app.jsx. */
+
+/* Nextra injects an inline <style> in <head> with default --nextra-primary-*
+ * values (blue hue 204). Inline styles are unlayered, so they beat our
+ * @layer nextra-custom :root. We declare these unlayered (outside any @layer)
+ * to win the cascade. Source order: our CSS file loads after the inline style. */
+:root {
+  --nextra-primary-hue: 349;
+  --nextra-primary-saturation: 47%;
+  --nextra-primary-lightness: 63%;
+  --nextra-bg: 13, 13, 20;
+}
+
+html {
+  color-scheme: dark;
+}
+
+@layer nextra-custom {
+
+  /* ── Landing page: restore Tailwind v4 base values that Nextra overrides ────── */
+  .landing-page *,
+  .landing-page ::backdrop,
+  .landing-page :after,
+  .landing-page :before {
+    border-color: var(--border);
+    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+
+  body:has(.landing-page) {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  /* ── Docs page brand overrides ──────────────────────────────────────────────── */
+  body,
+  .nextra-nav-container-blur,
+  .nextra-sidebar-footer {
+    background-color: #0d0d14;
+  }
+
+  .nextra-content {
+    color: #d4b8bf;
+  }
+
+  .nextra-nav-container-blur {
+    background-color: rgba(13, 13, 20, 0.85);
+    border-bottom: 1px solid rgba(207, 114, 135, 0.15);
+    box-shadow: none;
+  }
+
+  .nextra-sidebar-container,
+  aside.nextra-sidebar-container {
+    background-color: #0d0d14;
+    border-right: 1px solid rgba(207, 114, 135, 0.12);
+  }
+
+  .nextra-sidebar-footer {
+    border-top: 1px solid rgba(207, 114, 135, 0.12);
+    box-shadow: 0 -12px 16px rgb(13, 13, 20);
+  }
+
+  .nextra-content table {
+    border-color: rgba(207, 114, 135, 0.2);
+  }
+  .nextra-content thead tr {
+    border-bottom-color: rgba(207, 114, 135, 0.2);
+  }
+  .nextra-content tbody tr {
+    border-bottom-color: rgba(207, 114, 135, 0.1);
+  }
+  .nextra-content thead th {
+    color: #CF7287;
+    background-color: rgba(207, 114, 135, 0.06);
+  }
+
+  .nextra-content pre {
+    background-color: #12121e;
+    border: 1px solid rgba(207, 114, 135, 0.15);
+    border-radius: 6px;
+  }
+  .nextra-content :not(pre) > code {
+    background-color: rgba(207, 114, 135, 0.12);
+    border-color: rgba(207, 114, 135, 0.2);
+    color: #CF7287;
+  }
+
+  .nextra-content h1, .nextra-content h2, .nextra-content h3, .nextra-content h4 {
+    color: #e8b4bf;
+  }
+  .nextra-content h2 {
+    border-bottom: 1px solid rgba(207, 114, 135, 0.2);
+    padding-bottom: 0.4rem;
+  }
+
+  .nextra-content a:not([class]) {
+    color: #CF7287;
+    text-decoration-color: rgba(207, 114, 135, 0.4);
+  }
+  .nextra-content a:not([class]):hover {
+    color: #e8a0af;
+    text-decoration-color: rgba(207, 114, 135, 0.8);
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(207, 114, 135, 0.3);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(207, 114, 135, 0.6);
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(207, 114, 135, 0.3) transparent;
+  }
+
+  ::selection {
+    background: rgba(207, 114, 135, 0.3);
+    color: inherit;
+  }
+
+  .nextra-toc-footer {
+    border-top: 1px solid rgba(207, 114, 135, 0.12);
+    box-shadow: 0 -12px 16px rgb(13, 13, 20);
+    background-color: #0d0d14;
+  }
 }
