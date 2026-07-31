@@ -65,8 +65,8 @@ const BentoGrid = () => {
             <div className='space-y-4 px-8'>
               <h3 className='text-xl font-medium'>Real-Time Session Monitoring</h3>
               <p className='text-muted-foreground'>
-                Track active sessions, capture screenshots automatically, and receive instant updates on session
-                activity and file downloads.
+                Track active sessions, capture screenshots, and access all session activity and file downloads. Receive
+                instant updates whenever a case you are tagged in changes.
               </p>
             </div>
           </div>
